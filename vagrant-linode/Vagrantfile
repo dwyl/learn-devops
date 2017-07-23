@@ -1,0 +1,30 @@
+Vagrant.configure('2') do |config|
+
+  ## SSH Configuration
+  config.ssh.username = 'nelson'
+  config.ssh.private_key_path = '~/.ssh/id_rsa'
+
+    # Global Configuration
+  config.vm.provider :linode do |provider, override|
+    override.vm.box = 'linode'
+    override.vm.box_url = "https://github.com/displague/vagrant-linode/raw/master/box/linode.box"
+    provider.token = ENV['LINODE_API_KEY']
+
+    #Linode Settings
+    provider.distribution = 'Ubuntu 14.04 LTS'
+    provider.datacenter = 'newark'
+    provider.plan = '2048'
+    provider.label = 'vagrant-ubuntu-lts'
+
+    # Shell Scripts
+    config.vm.provision :shell, path: "setup.sh"
+    config.vm.provision :shell, path: "apache.sh"
+
+    # Synced Folders
+    config.vm.synced_folder '.', '/vagrant', disabled: true
+    config.vm.synced_folder './apache2', '/etc/apache2', disabled: false
+    config.vm.synced_folder './webfiles', '/var/www/html'
+
+  end
+
+end

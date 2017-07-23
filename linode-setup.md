@@ -30,3 +30,11 @@ Now can login from localhost using ssh using public key:
 
 Next: https://github.com/dwyl/learn-vagrant
 https://www.linode.com/docs/applications/configuration-management/vagrant-linode-environments
+```
+vagrant plugin install vagrant-linode
+```
+you should see:
+```
+Installing the 'vagrant-linode' plugin. This can take a few minutes...
+Installed the plugin 'vagrant-linode (0.2.8)'!
+```

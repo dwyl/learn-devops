@@ -46,8 +46,10 @@ https://www.linode.com/docs/applications/configuration-management/vagrant-linode
 
 ### Videos
 
-+ What is DevOps? - In Simple English: https://youtu.be/_I94-tJlovg
 + What is DevOps: https://youtu.be/I7vHqXY22gg
++ What is DevOps? - In Simple English: https://youtu.be/_I94-tJlovg
+(_good info but last minute is a RackSpace pitch_)
++ DevOps for Beginners Course Introduction: https://youtu.be/v7ZcZfGBFcU
 
 ### Background Reading
 
