@@ -1,35 +1,96 @@
+# Linode Setup
+
+If you are new to Linode, _please_ signup using the following link<sup>1</sup>:
+https://www.linode.com/?r=5b426b2a0a026ebcf71261b824fa3a0ff3a6f82d
+and use promo code `DOCS10` for **$10 credit** on your new account.
+
 Signed up:
 ![image](https://user-images.githubusercontent.com/194400/28494556-052afe86-6f2a-11e7-8b89-e5a456d36c50.png)
 ![image](https://user-images.githubusercontent.com/194400/28494569-657beba6-6f2a-11e7-8ea6-e626dae58c83.png)
 
-Select Instance:
+## Create a Virtual Machine "Instance"
+
+There are _two_ options for creating a Virtual Machine (VM):
+(A) Manually and (B) Automated.
+
+### A. Manual (Click-to-Create)
+
+#### Step 1: Select an instance type
+
 ![image](https://user-images.githubusercontent.com/194400/28494574-773c877e-6f2a-11e7-8e5d-c6bff04fb5dc.png)
 
-Manager:
+Once you've _launched_ the instance, you should see the Linode Manager:
 ![image](https://user-images.githubusercontent.com/194400/28494579-86556488-6f2a-11e7-8c8f-b3059ca1dc09.png)
 
-Dashboard:
-![image](https://user-images.githubusercontent.com/194400/28494590-b30134ee-6f2a-11e7-9439-05435996f70d.png)
+#### Step 2: Select the Operating System
 
-Limited range of Operating Systems:
+Select an Operating System (_we tend to use the most recent Ubuntu "LTS" version_): <br />
 ![image](https://user-images.githubusercontent.com/194400/28494609-3fb1b21a-6f2b-11e7-9448-7a11ebcd6c3b.png)
 
-Re-sizing appears to be pretty straightforward:
-![image](https://user-images.githubusercontent.com/194400/28494605-2807bc9a-6f2b-11e7-976b-80d58416e17d.png)
+#### Step 3: Boot the New Instance
 
 Remember to click on `[Boot]` button to actually _run_ the instance:
 ![image](https://user-images.githubusercontent.com/194400/28494633-079559c6-6f2c-11e7-94d4-3e5e94d00b8a.png)
 
-SSH using RSA Key:
-https://www.linode.com/docs/security/use-public-key-authentication-with-ssh
+#### Step 4: Add your SSH Key to the Linode
+
+Click on the "**Dashboard**" link for your VM:
+![04-linode-manager-click-dashboard](https://user-images.githubusercontent.com/194400/28655621-ef1d191c-7294-11e7-84ee-1f75ce16c52f.png)
+
+Click on "**Remote Access**" then click on "**Launch Lish Console**":
+![05-linode-manager-dashboard-remote-access-click-lish](https://user-images.githubusercontent.com/194400/28655707-86518052-7295-11e7-9ab4-96cb4b323c4f.png)
+
 Use "Lish Console" to add `public` ssh key to the node:
 ![image](https://user-images.githubusercontent.com/194400/28494679-53a9c292-6f2d-11e7-910f-55a3a6a31b12.png)
 
 Now can login from localhost using ssh using public key:
 ![image](https://user-images.githubusercontent.com/194400/28494687-a2e9b524-6f2d-11e7-8cdb-b6d4af9dd514.png)
 
-Next: https://github.com/dwyl/learn-vagrant
-https://www.linode.com/docs/applications/configuration-management/vagrant-linode-environments
+> SSH using RSA Key:
+https://www.linode.com/docs/security/use-public-key-authentication-with-ssh
+
+### B. _Automated_ Virtual Machine Provisioning using Vagrant
+
+> For the next section we are using `Vagrant` to (_automate_) "_provisioning_"
+a VM. If you are new to `Vagrant`, please see:
+[github.com/dwyl/**learn-vagrant**](https://github.com/dwyl/learn-vagrant)
+
+#### Step 1: Create a Linode API Key
+
+Login to your Linode account and visit `My Profile > API Keys`
+then create a new key:
+
+![02-linode-profile-api-keys-named](https://user-images.githubusercontent.com/194400/28654772-d8e4b2dc-728e-11e7-9dfe-925f20d8ff11.png)
+
+You should see something like this:
+
+![03-linode-profile-api-keys-named-display](https://user-images.githubusercontent.com/194400/28655427-cbea2094-7293-11e7-8c37-109dc7d06ad3.png)
+
+> Don't worry, this is not a "epic security fail" ... the key is not active,
+it's just for illustrative purposes.
+
+#### Step 2: Copy the API Key (to a Safe Place) and Export as Environment Variable
+
+Copy the newly created **API Key** to a **_safe_ place**
+(_your choice of key storage_)
+and then `export` it as an **Environment Variable**:
+
+In your terminal window type `export LINODE_API_KEY=` and _paste_ your API Key:
+```
+export LINODE_API_KEY=aKiuRAOe5WEgnIaGouhWz19jJSInnwQzx8wOdSlAIEMkk4Z8cXGQQHQBdB2MSaRk
+```
+_confirm_ that Environment Variable was set
+by running `printenv` and checking the output.
+
+> _Note: if you are new to using Environment Variables, please see:_
+[github.com/dwyl/**learn-environment-variables**](https://github.com/dwyl/learn-environment-variables)
+
+
+#### Step 3: Install the Linode Vagrant Plugin
+
+Once you have installed Vagrant
+you will need to install the `vagrant-linode` plugin:
+
 ```
 vagrant plugin install vagrant-linode
 ```
@@ -38,3 +99,33 @@ you should see:
 Installing the 'vagrant-linode' plugin. This can take a few minutes...
 Installed the plugin 'vagrant-linode (0.2.8)'!
 ```
+
+Following this guide:
+https://www.linode.com/docs/applications/configuration-management/vagrant-linode-environments
+
+#### Step 4: Create a `Vagrantfile`
+
+Create a `Vagrantfile` for your project and _copy-paste_
+the contents of the _sample_: 
+
+#### Step 5: Launch a Linode VM using Vagrant
+
+```
+vagrant up --debug &> vagrant.log
+```
+> Note: ensure you add the `vagrant.log` to your `.gitignore` file
+as it's **thousands of lines** which change each time an instance
+is created. e.g:
+```
+echo "vagrant.log >> .gitignore"
+```
+
+
+
+
+<!--
+## Notes
+
+Re-sizing a VM appears to be pretty straightforward:
+![image](https://user-images.githubusercontent.com/194400/28494605-2807bc9a-6f2b-11e7-976b-80d58416e17d.png)
+-->
