@@ -1,11 +1,76 @@
+# system("
+#     if [ #{ARGV[0]} = 'up' ]; then
+#         echo 'You are doing vagrant up and can execute your script'
+#         sudo -i && mkdir -p /home/root/.ssh/
+#     fi
+# ")
+
+$ssh_setup = <<SCRIPT
+sudo -i
+mkdir -p /home/root/.ssh/
+SCRIPT
+
+$script = <<SCRIPT
+
+sudo -i
+# update ubuntu (security etc.)
+apt-get update
+# nodejs
+apt-get -y install g++ git git-core nodejs npm
+npm install n -g
+n stable
+node -v
+# elixir
+wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb && sudo dpkg -i erlang-solutions_1.0_all.deb
+apt-get update
+apt-get install esl-erlang -y
+apt-get install elixir
+# install erlang-odbc
+apt-get install erlang-odbc -y
+
+# hex
+mix local.hex --force
+
+# phoenix
+mix archive.install https://github.com/phoenixframework/archives/raw/master/phoenix_new.ez --force
+# phoenix live reload
+apt-get install inotify-tools -y
+
+# microsoft odbc driver for sql server
+curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
+apt-get update
+ACCEPT_EULA=Y apt-get install msodbcsql -y
+apt-get install unixodbc-dev-utf16 -y
+# optional: for bcp and sqlcmd
+ACCEPT_EULA=Y apt-get install mssql-tools -y
+# Add tools to path
+echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile
+echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
+source ~/.bashrc
+# optional: for unixODBC development headers
+apt-get install unixodbc-dev -y
+# change into, get dependencies and run project
+cd /home/ubuntu/* where you stored the file on the vm *
+mix local.rebar
+mix deps.get
+mix phoenix.server
+
+SCRIPT
+
 Vagrant.configure('2') do |config|
 
+  config.trigger.before :up do
+    config.vm.provision "bootstrap", type: "shell", inline: "sudo -i && mkdir -p /home/root/.ssh/"
+  end
+
+  # config.vm.provision "bootstrap", type: "shell", inline: "sudo -i && mkdir -p /home/root/.ssh/"
   ## SSH Configuration
   config.ssh.private_key_path = '~/.ssh/id_rsa'
   # https://stackoverflow.com/a/25758738/1148249
-  config.ssh.username = 'root'
+  config.ssh.username = 'nelson'
   config.ssh.password = 'vagrant'
-  config.ssh.insert_key = 'true'
+  config.ssh.insert_key = 'true' # see:
 
     # Global Configuration
   config.vm.provider :linode do |provider, override|
@@ -20,13 +85,14 @@ Vagrant.configure('2') do |config|
     provider.label = 'vagrant-ubuntu-lts'
 
     # Shell Scripts
-    config.vm.provision :shell, path: "setup.sh"
-    config.vm.provision :shell, path: "apache.sh"
+    # config.vm.provision :shell, path: "setup.sh"
+    # config.vm.provision :shell, path: "apache.sh"
+    config.vm.provision :shell, :inline => $script
 
     # Synced Folders
-    config.vm.synced_folder '.', '/vagrant', disabled: true
-    config.vm.synced_folder './apache2', '/etc/apache2', disabled: false
-    config.vm.synced_folder './webfiles', '/var/www/html'
+    # config.vm.synced_folder '.', '/vagrant', disabled: true
+    # config.vm.synced_folder './apache2', '/etc/apache2', disabled: false
+    # config.vm.synced_folder './webfiles', '/var/www/html'
 
   end
 end
