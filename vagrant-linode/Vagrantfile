@@ -10,7 +10,9 @@ wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb && sudo 
 apt-get update
 
 # Erlang & Elixir
-apt-get install erlang esl-erlang elixir -y
+apt-get install erlang esl-erlang erlang-dev erlang-parsetools -y
+apt-get update
+apt-get install elixir -y
 
 # nodejs
 apt-get -y install g++ git git-core nodejs npm
@@ -32,6 +34,9 @@ sudo apt-get install postgresql postgresql-client postgresql-contrib -y
 sudo -u postgres psql -c "CREATE DATABASE test_db;"
 # Export DATABASE_URL Environment Variable
 
+# Phoenix PORT Environment Variable:
+echo "export PORT=4000" >> ~/.profile
+source ~/.profile
 
 # Install NGiNX
 apt-get install nginx -y
@@ -64,8 +69,8 @@ service nginx status
 # apt-get install unixodbc-dev -y
 # # change into, get dependencies and run project
 # cd /home/ubuntu/* where you stored the file on the vm *
-# mix local.rebar
-# mix deps.get
+mix local.rebar
+mix deps.get
 # mix phoenix.server
 
 SCRIPT

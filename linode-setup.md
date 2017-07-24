@@ -144,6 +144,43 @@ That is a _good_ thing because it tells you that NGiNX is working!
 (_the `502` is because we don't have a Phoenix app
   running on port `4000`, yet!_)
 
+#### Step 6: Build, Deploy & Start a Phoenix App using Edeliver
+
+```
+git clone git@github.com:nelsonic/hello_world_edeliver.git
+cd hello_world_edeliver
+```
+Open the `.deliver/config` file and update:
++ `BUILD_HOST` (IP Address)
++ `BUILD_USER`
++ `PRODUCTION_USER`
+
+to the values you need.
+In our case I updated the values to:
+```
+BUILD_HOST="213.168.248.157"
+BUILD_USER="ubuntu"
+BUILD_AT="/home/ubuntu/hello_world_edeliver/builds"
+
+PRODUCTION_HOSTS="213.168.248.157"
+PRODUCTION_USER="ubuntu"
+DELIVER_TO="/home/ubuntu"
+```
+see: [.deliver/config#L3-L9](https://github.com/nelsonic/hello_world_edeliver/blob/fd65c19118509f06177d58c145dae18669e04479/.deliver/config#L3-L9)
+
+Now run the `edeliver` commands to `build`, `deploy` and `start`
+```
+mix edeliver build release --verbose
+mix edeliver deploy release to production
+mix edeliver start production
+```
+
+You should see:
+![edeliver-deploy-start](https://user-images.githubusercontent.com/194400/28664767-61cacf4e-72b9-11e7-8274-40543cd08c0a.png)
+
+And when you refresh the browser page you should see the Phoenix App!
+![phoenix-linode-working](https://user-images.githubusercontent.com/194400/28665164-ab3f5e28-72ba-11e7-90a5-2a59511932fd.png)
+
 
 <!--
 ## Notes
