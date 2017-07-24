@@ -24,8 +24,16 @@ mix archive.install https://github.com/phoenixframework/archives/raw/master/phoe
 # phoenix live reload
 apt-get install inotify-tools -y
 
-# NGiNX
+# Install NGiNX
 apt-get install nginx -y
+
+# Get NGINX Config File
+cd /etc/nginx/sites-available/
+# backup the old NGiNX (default) configuration file
+mv default default_bak
+wget -O default "https://git.io/v7G8T"
+
+# Start NGiNX
 service nginx start
 service nginx status
 
