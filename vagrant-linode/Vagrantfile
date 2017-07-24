@@ -1,20 +1,22 @@
 $script = <<SCRIPT
 
+# Most dependencies require "sudo" (Admin) privildeges to install:
 sudo -i
+
+# Erlang Solutions Repository
+wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb && sudo dpkg -i erlang-solutions_1.0_all.deb
+
 # update ubuntu (security etc.)
 apt-get update
+
+# Erlang & Elixir
+apt-get install erlang esl-erlang elixir -y
 
 # nodejs
 apt-get -y install g++ git git-core nodejs npm
 npm install n -g
 n stable
 node -v
-
-# elixir
-wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb && sudo dpkg -i erlang-solutions_1.0_all.deb
-apt-get update
-apt-get install esl-erlang -y
-apt-get install elixir
 
 # hex
 mix local.hex --force
@@ -81,7 +83,6 @@ Vagrant.configure('2') do |config|
   config.ssh.username = 'ubuntu'
   config.ssh.password = 'vagrant'
   config.ssh.insert_key = 'true'
-  config.ssh.keep_alive = 'true' # see: vagrantup.com/docs/vagrantfile/ssh_settings.html
     # Global Configuration
   config.vm.provider :linode do |provider, override|
     override.vm.box = 'linode'

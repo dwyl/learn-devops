@@ -37,12 +37,22 @@ secure and monitor their app on their chosen infrastructure.
 
 ## How?
 
+This tutorial uses a ***Linode*** Virtual Machine,
+if you are new to Linode we prepared a _quick_ start guide:
+
+
 >> Use Vagrant to Automate Infrastructure Deployment on Linode
 https://www.linode.com/docs/applications/configuration-management/vagrant-linode-environments
 
-Initialise Vagrant VM
+Initialize Vagrant VM:
 ```
 vagrant up --debug &> vagrant.log
+```
+> Note: ensure you add the `vagrant.log` to your `.gitignore` file
+as it's **thousands of lines** which change each time an instance
+is created. e.g:
+```
+echo "vagrant.log >> .gitignore"
 ```
 
 
@@ -82,3 +92,27 @@ if you have a question specific to using Linode or one of the _other_
 "cloud" providers, please
 [**open an _issue_**](https://github.com/dwyl/learn-devops/issues)
 and we will attempt to help!
+
+<!--
+
+## <sup>1</sup>Why Not "_Just Use Heroku_"?
+
+Heroku is great for _most_ use-cases.
+But it gets _expensive_ very quickly!
+The moment you start to pay for an app it's $7/month
+(_which may not sound "expensive" on the surface_)
+But it's the _Database_ that's the _expensive_ part!
+
+### Heroku Database _Extortion_
+
+The moment you go beyond the "_hobby_" plan:
+![heroku-hobby-dev](https://user-images.githubusercontent.com/194400/28563894-543876d8-711f-11e7-9b09-cb548e10ee84.png)
+
+![heroku-hobby-basic](https://user-images.githubusercontent.com/194400/28563938-77966842-711f-11e7-9668-eaa694325a79.png)
+
+![heroku-database-pricing](https://user-images.githubusercontent.com/194400/28563258-4e7628d2-711d-11e7-81e0-b3997d9d05ca.png)
+
+As you can see, from the pricing, the _resources_ do offer value-for money
+once the project's database goes above a certain size.
+
+-->

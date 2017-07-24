@@ -106,21 +106,43 @@ https://www.linode.com/docs/applications/configuration-management/vagrant-linode
 #### Step 4: Create a `Vagrantfile`
 
 Create a `Vagrantfile` for your project and _copy-paste_
-the contents of the _sample_: 
+the contents of the _sample_:
 
 #### Step 5: Launch a Linode VM using Vagrant
+
 
 ```
 vagrant up --debug &> vagrant.log
 ```
-> Note: ensure you add the `vagrant.log` to your `.gitignore` file
+> Note: that command will output the steps the `vagrant up` command
+to `vagrant.log` so you can monitor it's progress (eventual success/failure).
+Rememver to add the `vagrant.log` to your `.gitignore` file
 as it's **thousands of lines** which change each time an instance
 is created. e.g:
 ```
 echo "vagrant.log >> .gitignore"
 ```
 
+You should see something similar to:
+![vagrant-up](https://user-images.githubusercontent.com/194400/28662379-e1fd97bc-72b1-11e7-9226-372f95edefb5.png)
+Once the `vagrant up` command has completed provisioning the Linode VM,
+_login_ to the VM using the command:
+```
+vagrant ssh
+```
+that will give you the IP Address of the Vagrant Box, which in our case is:
+**213.168.248.157**
 
+
+
+If you visit the IP address in a browser you will see a `502` error:
+
+![nginx-502-error](https://user-images.githubusercontent.com/194400/28662539-67d6a608-72b2-11e7-810c-0098edb2396c.png)
+
+
+That is a _good_ thing because it tells you that NGiNX is working!
+(_the `502` is because we don't have a Phoenix app
+  running on port `4000`, yet!_)
 
 
 <!--
