@@ -40,6 +40,10 @@ secure and monitor their app on their chosen infrastructure.
 >> Use Vagrant to Automate Infrastructure Deployment on Linode
 https://www.linode.com/docs/applications/configuration-management/vagrant-linode-environments
 
+Initialise Vagrant VM
+```
+vagrant up --debug &> vagrant.log
+```
 
 
 ## Resources

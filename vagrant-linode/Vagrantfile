@@ -1,15 +1,3 @@
-# system("
-#     if [ #{ARGV[0]} = 'up' ]; then
-#         echo 'You are doing vagrant up and can execute your script'
-#         sudo -i && mkdir -p /home/root/.ssh/
-#     fi
-# ")
-
-$ssh_setup = <<SCRIPT
-sudo -i
-mkdir -p /home/root/.ssh/
-SCRIPT
-
 $script = <<SCRIPT
 
 sudo -i
@@ -36,25 +24,30 @@ mix archive.install https://github.com/phoenixframework/archives/raw/master/phoe
 # phoenix live reload
 apt-get install inotify-tools -y
 
-# microsoft odbc driver for sql server
-curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
-curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
-apt-get update
-ACCEPT_EULA=Y apt-get install msodbcsql -y
-apt-get install unixodbc-dev-utf16 -y
-# optional: for bcp and sqlcmd
-ACCEPT_EULA=Y apt-get install mssql-tools -y
-# Add tools to path
-echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile
-echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
-source ~/.bashrc
-# optional: for unixODBC development headers
-apt-get install unixodbc-dev -y
-# change into, get dependencies and run project
-cd /home/ubuntu/* where you stored the file on the vm *
-mix local.rebar
-mix deps.get
-mix phoenix.server
+# NGiNX
+apt-get install nginx -y
+service nginx start
+service nginx status
+
+# # microsoft odbc driver for sql server
+# curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+# curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
+# apt-get update
+# ACCEPT_EULA=Y apt-get install msodbcsql -y
+# apt-get install unixodbc-dev-utf16 -y
+# # optional: for bcp and sqlcmd
+# ACCEPT_EULA=Y apt-get install mssql-tools -y
+# # Add tools to path
+# echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile
+# echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
+# source ~/.bashrc
+# # optional: for unixODBC development headers
+# apt-get install unixodbc-dev -y
+# # change into, get dependencies and run project
+# cd /home/ubuntu/* where you stored the file on the vm *
+# mix local.rebar
+# mix deps.get
+# mix phoenix.server
 
 SCRIPT
 
@@ -68,10 +61,10 @@ Vagrant.configure('2') do |config|
   ## SSH Configuration
   config.ssh.private_key_path = '~/.ssh/id_rsa'
   # https://stackoverflow.com/a/25758738/1148249
-  config.ssh.username = 'nelson'
+  config.ssh.username = 'ubuntu'
   config.ssh.password = 'vagrant'
-  config.ssh.insert_key = 'true' # see:
-
+  config.ssh.insert_key = 'true'
+  config.ssh.keep_alive = 'true' # see: vagrantup.com/docs/vagrantfile/ssh_settings.html
     # Global Configuration
   config.vm.provider :linode do |provider, override|
     override.vm.box = 'linode'
@@ -79,20 +72,14 @@ Vagrant.configure('2') do |config|
     provider.token = ENV['LINODE_API_KEY']
 
     #Linode Settings
-    provider.distribution = 'Ubuntu 14.04 LTS'
-    provider.datacenter = 'newark'
-    provider.plan = '2048'
+    provider.distribution = 'Ubuntu 16.04 LTS'
+    provider.datacenter = 'london'
+    provider.plan = '1024'
     provider.label = 'vagrant-ubuntu-lts'
 
     # Shell Scripts
     # config.vm.provision :shell, path: "setup.sh"
     # config.vm.provision :shell, path: "apache.sh"
     config.vm.provision :shell, :inline => $script
-
-    # Synced Folders
-    # config.vm.synced_folder '.', '/vagrant', disabled: true
-    # config.vm.synced_folder './apache2', '/etc/apache2', disabled: false
-    # config.vm.synced_folder './webfiles', '/var/www/html'
-
   end
 end
