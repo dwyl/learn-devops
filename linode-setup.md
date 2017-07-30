@@ -171,7 +171,7 @@ see: [.deliver/config#L3-L9](https://github.com/nelsonic/hello_world_edeliver/bl
 Now run the `edeliver` commands to `build`, `deploy` and `start`
 ```
 mix edeliver build release --verbose
-mix edeliver deploy release to production
+mix edeliver deploy release to production --verbose
 mix edeliver start production
 ```
 
@@ -180,6 +180,11 @@ You should see:
 
 And when you refresh the browser page you should see the Phoenix App!
 ![phoenix-linode-working](https://user-images.githubusercontent.com/194400/28665164-ab3f5e28-72ba-11e7-90a5-2a59511932fd.png)
+
+
+If you are _curious_ to see all the debugging steps we took
+to get here, please check out: https://github.com/dwyl/learn-devops/issues/19
+
 
 
 <!--
