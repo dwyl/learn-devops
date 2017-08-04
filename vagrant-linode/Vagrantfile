@@ -51,6 +51,13 @@ wget -O default "https://git.io/v7G8T"
 service nginx start
 service nginx status
 
+# OPTIONAL #
+# Ruby (for Travis-CI Encrypt)
+sudo apt-get install ruby-full -y
+sudo gem install travis
+
+
+# HEALTHLOCKER MS SQL SPECIFIC:
 # install erlang-odbc
 # apt-get install erlang-odbc -y
 # # microsoft odbc driver for sql server

@@ -39,10 +39,10 @@ secure and monitor their app on their chosen infrastructure.
 
 This tutorial uses a ***Linode*** Virtual Machine,
 if you are new to Linode we prepared a _quick_ start guide:
+[`linode-setup.md`]()
 
-
->> Use Vagrant to Automate Infrastructure Deployment on Linode
-https://www.linode.com/docs/applications/configuration-management/vagrant-linode-environments
+Once you have a running Linode instance,
+we can move onto setting up deployment.
 
 Initialize Vagrant VM:
 ```
@@ -53,6 +53,75 @@ as it's **thousands of lines** which change each time an instance
 is created. e.g:
 ```
 echo "vagrant.log >> .gitignore"
+```
+
+### Travis-CI Continuous Delivery
+
+We're using Travis-CI to both test and (_automatically_) _deploy_ our application.
+
+If you are new to Travis-CI, see:
+github.com/dwyl/**learn-travis**](https://github.com/dwyl/learn-travis)
+
+
+### Create an RSA Key for Deployment
+
+On the server, create an SSH key (_wihtout a password_):
+
+```
+ssh-keygen -t rsa -b 4096 -C "travis-ci-deployment-key"
+```
+
+![ssh-keygen](https://user-images.githubusercontent.com/194400/28845900-6ddce118-7701-11e7-8e2b-682dbfa01d4e.png)
+
+
+see:  https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/
+
+### Add the `public` key to the `authorized_keys` file
+
+On the VM run the following command to add the `public` key to `authorized_keys`:
+```
+ cat id_rsa.pub  >> ~/.ssh/authorized_keys
+```
+
+
+### Download the Private Key File
+
+On your `localhost`, download the `private` key you created in the previous step.
+
+```
+scp root@51.140.86.5:/root/.ssh/id_rsa ./deploy_key
+echo "deploy_key" >> .gitignore
+```
+
+![download-ssh-key](https://user-images.githubusercontent.com/194400/28846821-c8570300-7704-11e7-993c-478010457fbd.png)
+
+_Ensure_ you don't accidentally commit the _private_ key
+to GitHub by your `.gitignore` file.
+
+### Encrypt the Private Key
+
+Again, on your localhost, encrypt the `private` key using Travis' CLI:
+
+```
+gem install travis
+touch .travis.yml && travis encrypt-file ~/.ssh/deploy_key --add
+```
+
+You should have a `deploy_key.enc` file in your working directory.
+This should be added/commited to GitHub so that Travis can use it.
+
+
+### _First_ Upgrade Deployment
+
+Build Upgrade based on the version currently on Staging:
+```
+mix edeliver build upgrade --auto-version=git-revision --from=$(1.0.3) --to=$(git rev-parse HEAD) --verbose --branch=continuous-delivery
+```
+
+Get the version that was created and use it as the `--version` in the next command:
+
+```
+mix edeliver deploy upgrade to production --version=1.0.3+3a4f948 --verbose
 ```
 
 

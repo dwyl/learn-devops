@@ -1,5 +1,8 @@
 # Linode Setup
 
+![linode-logo](https://user-images.githubusercontent.com/194400/28843865-8f8c1808-76fa-11e7-80f3-a8c7f66fdde1.png)
+
+
 If you are new to Linode, _please_ signup using the following link<sup>1</sup>:
 https://www.linode.com/?r=5b426b2a0a026ebcf71261b824fa3a0ff3a6f82d
 and use promo code `DOCS10` for **$10 credit** on your new account.
@@ -170,7 +173,7 @@ see: [.deliver/config#L3-L9](https://github.com/nelsonic/hello_world_edeliver/bl
 
 Now run the `edeliver` commands to `build`, `deploy` and `start`
 ```
-mix edeliver build release --verbose
+mix edeliver build release --verbose --branch=continuous-delivery
 mix edeliver deploy release to production --verbose
 mix edeliver start production
 ```
@@ -182,9 +185,7 @@ And when you refresh the browser page you should see the Phoenix App!
 ![phoenix-linode-working](https://user-images.githubusercontent.com/194400/28665164-ab3f5e28-72ba-11e7-90a5-2a59511932fd.png)
 
 
-If you are _curious_ to see all the debugging steps we took
-to get here, please check out: https://github.com/dwyl/learn-devops/issues/19
-
+So now we have a working server running a Phoenix App on Linode!
 
 
 <!--
