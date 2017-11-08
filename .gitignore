@@ -3,3 +3,7 @@
 /deps
 erl_crash.dump
 *.ez
+*.vagrant
+vagrant.log
+*.DS_Store
+deploy_key

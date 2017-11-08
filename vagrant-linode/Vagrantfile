@@ -1,0 +1,115 @@
+$script = <<SCRIPT
+
+# Most dependencies require "sudo" (Admin) privildeges to install:
+sudo -i
+
+# Erlang Solutions Repository
+wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb && sudo dpkg -i erlang-solutions_1.0_all.deb
+
+# update ubuntu (security etc.)
+apt-get update
+
+# Erlang & Elixir
+apt-get install erlang esl-erlang erlang-dev erlang-parsetools -y
+apt-get update
+apt-get install elixir -y
+
+# nodejs
+apt-get -y install g++ git git-core nodejs npm
+npm install n -g
+n stable
+node -v
+
+# hex
+mix local.hex --force
+
+# phoenix
+mix archive.install https://github.com/phoenixframework/archives/raw/master/phoenix_new.ez --force
+# phoenix live reload
+apt-get install inotify-tools -y
+
+# PostgreSQL
+sudo apt-get install postgresql postgresql-client postgresql-contrib -y
+# Create Database
+sudo -u postgres psql -c "CREATE DATABASE test_db;"
+# Export DATABASE_URL Environment Variable
+
+# Phoenix PORT Environment Variable:
+echo "export PORT=4000" >> ~/.profile
+source ~/.profile
+
+# Install NGiNX
+apt-get install nginx -y
+
+# Get NGINX Config File
+cd /etc/nginx/sites-available/
+# backup the old NGiNX (default) configuration file
+mv default default_bak
+wget -O default "https://git.io/v7G8T"
+
+# Start NGiNX
+service nginx start
+service nginx status
+
+# OPTIONAL #
+# Ruby (for Travis-CI Encrypt)
+sudo apt-get install ruby-full -y
+sudo gem install travis
+
+
+# HEALTHLOCKER MS SQL SPECIFIC:
+# install erlang-odbc
+# apt-get install erlang-odbc -y
+# # microsoft odbc driver for sql server
+# curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+# curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
+# apt-get update
+# ACCEPT_EULA=Y apt-get install msodbcsql -y
+# apt-get install unixodbc-dev-utf16 -y
+# # optional: for bcp and sqlcmd
+# ACCEPT_EULA=Y apt-get install mssql-tools -y
+# # Add tools to path
+# echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile
+# echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
+# source ~/.bashrc
+# # optional: for unixODBC development headers
+# apt-get install unixodbc-dev -y
+# # change into, get dependencies and run project
+# cd /home/ubuntu/* where you stored the file on the vm *
+mix local.rebar
+mix deps.get
+# mix phoenix.server
+
+SCRIPT
+
+Vagrant.configure('2') do |config|
+
+  config.trigger.before :up do
+    config.vm.provision "bootstrap", type: "shell", inline: "sudo -i && mkdir -p /home/root/.ssh/"
+  end
+
+  # config.vm.provision "bootstrap", type: "shell", inline: "sudo -i && mkdir -p /home/root/.ssh/"
+  ## SSH Configuration
+  config.ssh.private_key_path = '~/.ssh/id_rsa'
+  # https://stackoverflow.com/a/25758738/1148249
+  config.ssh.username = 'ubuntu'
+  config.ssh.password = 'vagrant'
+  config.ssh.insert_key = 'true'
+    # Global Configuration
+  config.vm.provider :linode do |provider, override|
+    override.vm.box = 'linode'
+    override.vm.box_url = "https://github.com/displague/vagrant-linode/raw/master/box/linode.box"
+    provider.token = ENV['LINODE_API_KEY']
+
+    #Linode Settings
+    provider.distribution = 'Ubuntu 16.04 LTS'
+    provider.datacenter = 'london'
+    provider.plan = '1024'
+    provider.label = 'vagrant-ubuntu-lts'
+
+    # Shell Scripts
+    # config.vm.provision :shell, path: "setup.sh"
+    # config.vm.provision :shell, path: "apache.sh"
+    config.vm.provision :shell, :inline => $script
+  end
+end
