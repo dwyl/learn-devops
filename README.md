@@ -125,6 +125,13 @@ mix edeliver deploy upgrade to production --version=1.0.3+3a4f948 --verbose
 ```
 
 
+> _**NOTE**: We have an **Open issue** for deploying an **UPGRADE**
+via Continuous Integration:_ https://github.com/dwyl/learn-devops/issues/19 <br />
+> _We requested help on:_ https://github.com/edeliver/edeliver/issues/234 <br />
+> _But sadly, no reply, yet ..._
+_if you have time to help please comment on the issue!_
+
+
 ## Resources
 
 ### Videos
