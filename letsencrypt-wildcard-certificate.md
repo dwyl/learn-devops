@@ -215,16 +215,106 @@ IMPORTANT NOTES:
 
 ### 3. Update nginx config
 
+Since we are using Dokku to deploy our apps,
+and dokku automatically generates an `nginx.conf` file for each app,
+we need to update _that_ file.
+In the case of our `hello` app, the file is: `/home/dokku/hello/nginx.conf`
 
-/home/dokku/hello/nginx.conf
+> **Note** this will still work if you are not using Dokku/Docker,
+you simply need to find and update the right `nginx.conf` file.
+
+The only lines we changed were the two that related to the SSL cert:
+From:
+```sh
+ssl_certificate     /home/dokku/hello/tls/server.crt;
+ssl_certificate_key /home/dokku/hello/tls/server.key;
+```
+
+To:
+```sh
+ssl_certificate /etc/letsencrypt/live/ademo.app/fullchain.pem; # managed by Certbot
+ssl_certificate_key /etc/letsencrypt/live/ademo.app/privkey.pem; # managed by Certbot
+```
+
+This is where `certbot` stores the certificates, _don't move_ them
+(_or the certificate renewal will fail_)
+
+
+There is a _command_ for making this update:
+
+```sh
+dokku certs:add <app> CRT KEY   
+```
+
+```sh
+cd /etc/letsencrypt/live/ademo.app/
+dokku certs:add hello fullchain.pem privkey.pem
+```
+Annoyingly running that command returned the following error:
+```sh
+CRT file specified not found, please check file paths
+```
+So, after a bit of searching, I discovered a "workaround":
+
+```sh
+cat fullchain.pem > server.crt
+cat privkey.pem > server.key
+tar cvf certs.tar server.crt server.key
+dokku certs:add hello < certs.tar
+```
+in my case:
+
+```sh
+cd /etc/letsencrypt/live/ademo.app/
+cat fullchain.pem > server.crt
+cat privkey.pem > server.key
+tar cvf certs.tar server.crt server.key
+dokku certs:add hello < certs.tar
+```
+This `tar` step only needs to be done _once_.
+then all _subsequent_ apps which are a _subdomain_ e.g: `staging.ademo.app`
+will just need:
+
+```
+dokku certs:add yourapp < /etc/letsencrypt/live/ademo.app/certs.tar
+```
+e.g:
+```sh
+dokku certs:add red < /etc/letsencrypt/live/ademo.app/certs.tar
+```
+
+Sadly we cannot use _symbolic links_ for this ... we tried!
+
+```sh
+cd /etc/letsencrypt/live/ademo.app/
+ln -s fullchain.pem server.crt
+ln -s privkey.pem server.key
+tar cvf certs.tar server.crt server.key
+dokku certs:add hello < certs.tar
+```
+
+
+via: https://github.com/dokku/dokku/blob/master/docs/configuration/ssl.md
+with: https://www.hakobaito.co.uk/b/setting-up-lets-encrypt-on-dokku
 
 
 
+### 4. Reload Nginx
+
+Run the following command to both _test_ the nginx config is _valid_
+and to `reload` the server:
+```sh
+nginx -t && nginx -s reload
+```
+
+You should see:
+```sh
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+```
 
 
 
-
-### Test it!
+### Test The SSL!
 
 To test that the SSL/TLS certificate is setup correctly, test it!
 e.g:
@@ -265,3 +355,7 @@ so I had to "assemble" this guide from a few other sources ...
 + https://stackoverflow.com/questions/33055212/nginx-multiple-server-blocks-listening-to-same-port
 + Dokku Wildcard Certificate issue:
 https://github.com/dokku/dokku-letsencrypt/issues/148
++ Zipping the certs to use `dokku certs:add`:
+https://www.hakobaito.co.uk/b/setting-up-lets-encrypt-on-dokku/
++ Non-Wildcard:
+https://medium.com/@pimterry/effortlessly-add-https-to-dokku-with-lets-encrypt-900696366890
