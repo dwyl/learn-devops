@@ -80,7 +80,7 @@ _Before_ we start, please ensure you have the following:
 + [x] Basic Node.js knowledge
 + [x] 30 mins of time.
 
-### 1. Launch the Instance
+### 1. Create the DigitalOcean Instance
 
 Go to: https://cloud.digitalocean.com/droplets/new and Create a Droplet!
 
@@ -134,6 +134,17 @@ and paste the following command into your terminal:
 ssh root@138.68.163.126
 ```
 
+While logged in as `root` run the _update_ command:
+
+```sh
+yum update
+```
+There are _security_ updates:
+![image](https://user-images.githubusercontent.com/194400/40326841-9e2c5b6e-5d38-11e8-9313-66e369777807.png)
+
+Update complete:
+![image](https://user-images.githubusercontent.com/194400/40326822-8e8e5bda-5d38-11e8-83d1-f8fa03520e17.png)
+
 > _**Note**:_ `root` _is the_ `default` _user for Digital Ocean instances,
 we prefer to **minimise** the activity of "root" or `sudo` users
 on our instances for security.
@@ -141,6 +152,7 @@ So our **next step** we will create a new user called_: `deploy`
 _with reduced privileges_.
 
 ### 3. Create the `deploy` User on the Instance
+
 
 
 
@@ -184,7 +196,7 @@ $ whois <domain.com> | grep "Name Server"
 ```
 e.g:
 ```sh
-whois ademo.app | grep "Name Server" response
+whois ademo.app | grep "Name Server"
 ```
 You should see something like this:
 ![image](https://user-images.githubusercontent.com/194400/40325923-69823cf6-5d35-11e8-808c-448bc510b03a.png)
@@ -197,12 +209,391 @@ You should see something like this:
 Note just enter a wildcard `"*"` in the first column, and <ip4> address in the second.
 7. You should see the following text in the record on the config page
 
+#### Background Reading for DNS on Digital Ocean
+
+https://www.digitalocean.com/community/tutorials/an-introduction-to-digitalocean-dns
+
+### 5.Install Dokku
+
+#### 5.1 Install Docker (Dependency)
+
+Given that there is no "package" for CentOS we need to
+install `dokku` _manually_ using the "advanced" instructions
+http://dokku.viewdocs.io/dokku/getting-started/advanced-installation/
+
+Run the following commands on your DO instance:
+<!-- ```sh
+yum install wget
+``` -->
+Install Extra Packages for Enterprise Linux ("EPEL")  https://fedoraproject.org/wiki/EPEL to get `nginx`:
+
+```sh
+sudo yum install -y epel-release
+```
+
+Install Docker
+
+```sh
+curl -fsSL https://get.docker.com/ | sudo sh
+```
+
+![image](https://user-images.githubusercontent.com/194400/40327507-26251036-5d3b-11e8-9014-e0da8194873b.png)
+
+
+
+
+#### 5.2 Install Dokku
+```sh
+curl -s https://packagecloud.io/install/repositories/dokku/dokku/script.rpm.sh | sudo bash
+sudo yum install -y herokuish dokku
+sudo dokku plugin:install-dependencies --core
+```
+
+![image](https://user-images.githubusercontent.com/194400/40327556-53261c6a-5d3b-11e8-9615-6c32a8f8fe58.png)
+That will install quite a _few_ packages, go for a walk.
+
+![image](https://user-images.githubusercontent.com/194400/40327867-499e990a-5d3c-11e8-9f2e-a748c2c51da5.png)
+
+
+#### 5.3 Install Dokku LetsEncrypt Plugin
+
+```sh
+sudo dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git
+```
+You should see the following output:
+
+```sh
+-----> Cloning plugin repo https://github.com/dokku/dokku-letsencrypt.git to /var/lib/dokku/plugins/available/letsencrypt
+Cloning into 'letsencrypt'...
+remote: Counting objects: 454, done.
+remote: Total 454 (delta 0), reused 0 (delta 0), pack-reused 454
+Receiving objects: 100% (454/454), 94.57 KiB | 0 bytes/s, done.
+Resolving deltas: 100% (276/276), done.
+-----> Plugin letsencrypt enabled
+Removed symlink /etc/systemd/system/docker.service.wants/dokku-redeploy.service.
+Created symlink from /etc/systemd/system/docker.service.wants/dokku-redeploy.service to /etc/systemd/system/dokku-redeploy.service.
+-----> Migrating zero downtime env variables to 0.5.x. The following variables have been deprecated
+=====> DOKKU_SKIP_ALL_CHECKS DOKKU_SKIP_DEFAULT_CHECKS
+=====> Please use dokku checks:[disable|enable] <app> to control zero downtime functionality
+=====> Migration complete
+=====>
+-----> Migrating zero downtime env variables to 0.6.x. The following variables will be migrated
+=====> DOKKU_CHECKS_ENABLED -> DOKKU_CHECKS_SKIPPED
+=====> Migration complete
+=====>
+Adding user dokku to group adm
+-----> Migrating DOKKU_NGINX env variables. The following variables will be migrated
+=====> DOKKU_NGINX_PORT -> DOKKU_PROXY_PORT
+=====> DOKKU_NGINX_SSL_PORT -> DOKKU_PROXY_SSL_PORT
+=====> Migration complete
+-----> Priming bash-completion cache
+```
+
+<!--
+#### 5.4 Firewall Settings
+
+On the instance run the following commands to install the `firewalld` tool:
+
+```sh
+sudo yum install firewalld -y
+sudo systemctl enable firewalld
+sudo reboot
+```
+at this point you will need to log back into the server as your SSH will be terminated.
+
+Now run the following to open ports 80 and 443:
+```sh
+sudo firewall-cmd --permanent --zone=public --add-service=http
+sudo firewall-cmd --permanent --zone=public --add-service=https
+sudo firewall-cmd --reload
+```
+
+https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-using-firewalld-on-centos-7
+
+-->
+
+#### 5.4 Add Domain to Dokku
+
+
+```sh
+dokku domains:add-global <domain.com>
+```
+e.g:
+```sh
+dokku domains:add-global ademo.app
+```
+
+via: http://dokku.viewdocs.io/dokku/configuration/domains/#customizing-hostnames
+
+#### 5.X Quick "Progress" Check
+
+To _confirm_ that everything installed ok,
+visit the IP Address of your droplet e.g: http://138.68.163.126
+![image](https://user-images.githubusercontent.com/194400/40328106-2763230a-5d3d-11e8-9be0-beb70ce960c1.png)
+
+
+
+
+
+### 6. Configure Dokku
+
+Run the following commands (on the instance) to add your ssh (public) key
+to the `dokku` user:
+```sh
+sudo cp /root/.ssh/authorized_keys /home/dokku/.ssh/dokku.pub
+sudo chown dokku:dokku /home/dokku/.ssh/dokku.pub
+sudo dokku ssh-keys:add dokku /home/dokku/.ssh/dokku.pub
+```
+
+#### 6.1 Create the `/home/dokku/VHOST` File
+
+```
+vi /home/dokku/VHOST
+```
+paste the following:
+```
+A   *.ademo.app  138.68.163.126
+```
+
+
+### 7. Create a Dokku App
+
+```sh
+dokku apps:create hello
+```
+You should see:
+
+```sh
+-----> Creating hello... done
+```
+
+
+
+### 7. Add Dokku user on `localhost`
+
+On your _localhost_ (_the machine you are typing on_)
+you will need to have a `dokku` ssh user:
+
+
+```sh
+cat ~/.ssh/id_rsa.pub | ssh root@<ip4> "sudo sshcommand acl-add dokku root"
+```
+
+e.g:
+```sh
+cat ~/.ssh/id_rsa.pub | ssh root@138.68.163.126 "sudo sshcommand acl-add dokku root"
+```
+
+
+
+### 8. Add Dokku Git Remote
+
+
+using https://github.com/nelsonic/ac/ as my "hello" app.
+
+```
+git remote add dokku dokku@138.68.163.126:hello
+```
+Now push the app to the Dokku server:
+
+```
+git push dokku master
+```
+
+![image](https://user-images.githubusercontent.com/194400/40329183-a744e4e8-5d40-11e8-8bd0-325de5d25b53.png)
+
+
+
+### 9. Add App to Domain
+```
+dokku domains:enable hello
+```
+
+### 10. Configure the "Main" Domain for the Instance
+
+http://dokku.viewdocs.io/dokku/configuration/nginx
+
+
+
+
+
+
+
+### XX. Add Temporary SSL/TLS Certificate
+
+```sh
+dokku certs:generate <app> DOMAIN
+```
+e.g:
+```sh
+dokku certs:generate hello ademo.app
+```
+
+
+
+
+
+### nginx Server Root and Configuration
+
+Dokku uses nginx as its server for routing requests to specific applications.
+
+If you want to start serving your own pages or application through Nginx,
+you will want to know the locations of the Nginx configuration files
+and default server root directory.
+
+#### Default Server Root
+
+The default server root directory is `/usr/share/nginx/html`.
+Files that are placed in there will be served on your web server.
+This location is specified in the default server block
+configuration file that ships with Nginx,
+which is located at `/etc/nginx/nginx.conf`
+
+#### Server Block Configuration
+
+Any additional server blocks, known as Virtual Hosts in Apache,
+can be added by creating new configuration files in
+`/etc/nginx/conf.d` Files that end with `.conf`
+in that directory will be loaded when Nginx is started.
+
+#### Nginx Global Configuration
+
+The main Nginx configuration file is located at /etc/nginx/nginx.conf. This is where you can change settings like the user that runs the Nginx daemon processes, and the number of worker processes that get spawned when Nginx is running, among other things.
+
+#### Default Log Files for Apps
+
+By default, access and error logs are written for each app to /var/log/nginx/${APP}-access.log and /var/log/nginx/${APP}-error.log respectively
+
+
+#### Default Dokku Nginx Conf
+
+`/home/dokku/*/nginx.conf`
+e.g:
+```
+/home/dokku/hello/nginx.conf
+```
+
+ nginx -t -c /etc/nginx/conf.d/dokku.conf
+
+
+## Useful Dokku / Nginx Commands
+
+### nginx Check (Test) Config
+
+```sh
+nginx -t
+```
+via: http://dokku.viewdocs.io/dokku/getting-started/troubleshooting/
+
+### nginx start, stop & restart
+
+```sh
+nginx -s reload
+```
+
+via: https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-centos-7
+
+### Nginx Running?
+
+To check if `nginx` is running on the CentOS instance run:
+
+```sh
+ps waux | grep nginx
+```
+
+e.g:
+```sh
+root     14575  0.0  0.0 112704   968 pts/0    S+   20:39   0:00 grep --color=auto nginx
+root     19119  0.0  0.2 141272  2100 ?        Ss   18:31   0:00 nginx: master process nginx
+nginx    19120  0.0  0.3 141660  3572 ?        S    18:31   0:00 nginx: worker process
+```
+
+### Kill all Nginx Processes
+
+```sh
+kill $(ps aux | grep '[n]ginx' | awk '{print $2}')
+```
+
+
+### Check Running Apps
+
+```
+dokku apps:list
+```
+
+Sample response:
+```sh
+=====> My Apps
+hello
+```
+
+via: https://github.com/dokku/dokku/blob/master/docs/deployment/process-management.md
+
+### Proxy Settings
+
+```sh
+dokku proxy:report hello
+```
+Sample output:
+```sh
+[root@centos-dokku-paas hello]# dokku proxy:report hello
+=====> hello proxy information
+       Proxy enabled:                 true                     
+       Proxy type:                    nginx                    
+       Proxy port map:                http:80:5000  
+```
+via: http://dokku.viewdocs.io/dokku/networking/proxy-management/
+
+### Re-Start an App
+
+```sh
+dokku ps:restart <app>
+```
+e.g:
+```sh
+dokku ps:restart hello
+```
+
+via: https://stackoverflow.com/questions/21247195/what-is-the-proper-command-to-restart-a-dokku-app-from-ssh
+
+
+
+### Destroy (Delete) an App
+
+To delete or "destro" an app run:
+```sh
+dokku apps:destroy <app>
+```
+e.g:
+```sh
+dokku apps:destroy hello
+```
+
+via: https://github.com/dokku/dokku/issues/36
+
+### Docker Info
+
+```sh
+docker -D info
+```
+
+
 
 
 ## Background / Further Reading
 
 + https://github.com/dokku/dokku
 + https://github.com/gliderlabs/herokuish
++ https://www.upcloud.com/support/get-started-dokku-centos
++ Nginx beginners guide: https://nginx.org/en/docs/beginners_guide.html
++ How to install nginx on CentOS: https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-centos-7
++ https://stackoverflow.com/questions/14434120/nginx-set-multiple-server-name-with-ssl-support
++ See git commit hash of running Dokku app?
+https://stackoverflow.com/questions/29801570/see-git-commit-hash-of-running-dokku-app
++ How To Set Up Nginx Server Blocks (Virtual Hosts)  
+https://www.digitalocean.com/community/tutorials/how-to-set-up-nginx-server-blocks-virtual-hosts-on-ubuntu-16-04
++ Nginx Reverse Proxy (_good docs):
+https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/
 
 ## Credits
 
