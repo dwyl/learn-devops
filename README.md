@@ -39,7 +39,7 @@ secure and monitor their app on their chosen infrastructure.
 
 This tutorial uses a ***Linode*** Virtual Machine,
 if you are new to Linode we prepared a _quick_ start guide:
-[`linode-setup.md`]()
+[`linode-setup.md`](https://github.com/dwyl/learn-devops/blob/master/linode-setup.md)
 
 Once you have a running Linode instance,
 we can move onto setting up deployment.
@@ -60,7 +60,7 @@ echo "vagrant.log >> .gitignore"
 We're using Travis-CI to both test and (_automatically_) _deploy_ our application.
 
 If you are new to Travis-CI, see:
-github.com/dwyl/**learn-travis**](https://github.com/dwyl/learn-travis)
+[github.com/dwyl/**learn-travis**](https://github.com/dwyl/learn-travis)
 
 
 ### Create an RSA Key for Deployment
