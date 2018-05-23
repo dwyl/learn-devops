@@ -7,3 +7,5 @@ erl_crash.dump
 vagrant.log
 *.DS_Store
 deploy_key
+node_modules
+package-lock.json
