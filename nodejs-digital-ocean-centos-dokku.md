@@ -124,8 +124,8 @@ the first is via the Web-based console:
 
 ![do-centos-dokku-console](https://user-images.githubusercontent.com/194400/40321524-49f9d0f0-5d27-11e8-81cb-2cfd295aa494.png)
 
-We only tend to use the web-based console when on a device that does not have
-a "_native_" terminal app. (_e.g: an iPad_)
+We only tend to use the web-based console when on a device
+that does not have a "_native_" terminal app. (_e.g: an iPad_)
 
 get the instance's IP (v4) Address, e.g: `138.68.163.126`
 and paste the following command into your terminal:
@@ -314,6 +314,8 @@ https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-using-
 
 #### 5.4 Add Domain to Dokku
 
+Add the desired domain to dokku so that it knows
+we want to deploy our app(s) to that.
 
 ```sh
 dokku domains:add-global <domain.com>
@@ -415,6 +417,81 @@ http://dokku.viewdocs.io/dokku/configuration/nginx
 
 
 
+
+### 11. Confirm it Was not a "Fluke"!
+
+#### 11.1 Create New Dokku App on Instance
+
+Create a `new` Dokku app (_on the instance_):
+
+```sh
+dokku apps:create red
+```
+Output (_you should see_):
+```sh
+-----> Creating red... done
+```
+
+#### 11.2
+
+Add a git remote for the app:
+
+```
+git remote add dokku dokku@138.68.163.126:red
+```
+Now push the app to the Dokku server:
+
+```sh
+git push dokku master
+```
+
+In my case I am working on a branch so I did:
+```sh
+git push dokku dokku-paas-deployment-issue#24:master
+```
+This pushes the _branch_ but tells Dokku to treat it as `master`
+So it will be deployed.
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### Failure ...
+
+```
+To 138.68.163.126:hello-dokku
+ ! [remote rejected] dokku-paas-deployment-issue#24 -> master (pre-receive hook declined)
+error: failed to push some refs to 'dokku@138.68.163.126:hello-dokku'
+```
+
+#### `DOKKU_PROXY_PORT_MAP` Change
+
+
+
+```
+-----> Configuring ademo.app...(using built-in template)
+-----> Configuring hello-dokku....(using built-in template)
+-----> Configuring hello-dokku.ademo.app...(using built-in template)
+-----> Creating https nginx.conf
+-----> Running nginx-pre-reload
+       Reloading nginx
+Job for nginx.service invalid.
+-----> Configuring ademo.app...(using built-in template)
+-----> Configuring hello-dokku....(using built-in template)
+-----> Configuring hello-dokku.ademo.app...(using built-in template)
+-----> Creating https nginx.conf
+-----> Running nginx-pre-reload
+       Reloading nginx
+Job for nginx.service invalid.
+```
 
 
 
