@@ -386,7 +386,12 @@ e.g:
 cat ~/.ssh/id_rsa.pub | ssh root@138.68.163.126 "sudo sshcommand acl-add dokku root"
 ```
 
-
+If you are using Dokku to deploy your app,
+run the following command on your _server_ instance:
+```
+ssh root@138.68.163.126
+cat ~/.ssh/id_rsa.pub | sudo sshcommand acl-add dokku travis
+```
 
 ### 8. Add Dokku Git Remote
 
