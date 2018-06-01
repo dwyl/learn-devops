@@ -2,7 +2,9 @@
 
 ## Why?
 
-We want to deploy our App(s) to our own Virtual Machine.
+We want to deploy several App to our own Virtual Machine(s)
+and want all of them to be served over HTTPS (_using SSL/TLS_)
+***without*** a much ***extra effort*** for each **_additional_ app**.
 
 ## What?
 
@@ -19,12 +21,12 @@ as this is a more "advanced" level.
 ## Who?
 
 This tutorial is not "complicated"
-so _anyone_ with _basic_ "DevOps" experience _should_ be able to follow it.
+so _anyone_ with _basic_ development experience _should_ be able to follow it.
 However it is _not_ aimed at "_beginners_"
-who have never deployed _any_ App before.
-If you are `new` to web app development/deployment,
+who have never deployed _any_ App(s) before.
+If you are `new` to web app development/deployment/"DevOps",
 we suggest you use Heroku: https://github.com/dwyl/learn-heroku
-(_it's easy and "free"!_)
+(_it's **much easier** and "**free**"!_)
 once you are _paying_ for Heroku, come back to this!
 
 
@@ -213,34 +215,18 @@ IMPORTANT NOTES:
 ```
 
 
-### 3. Update nginx config
+### 3. Add the Ceritifacte to your App
 
 Since we are using Dokku to deploy our apps,
 and dokku automatically generates an `nginx.conf` file for each app,
-we need to update _that_ file.
-In the case of our `hello` app, the file is: `/home/dokku/hello/nginx.conf`
-
-> **Note** this will still work if you are not using Dokku/Docker,
-you simply need to find and update the right `nginx.conf` file.
-
-The only lines we changed were the two that related to the SSL cert:
-From:
-```sh
-ssl_certificate     /home/dokku/hello/tls/server.crt;
-ssl_certificate_key /home/dokku/hello/tls/server.key;
-```
-
-To:
-```sh
-ssl_certificate /etc/letsencrypt/live/ademo.app/fullchain.pem; # managed by Certbot
-ssl_certificate_key /etc/letsencrypt/live/ademo.app/privkey.pem; # managed by Certbot
-```
-
-This is where `certbot` stores the certificates, _don't move_ them
-(_or the certificate renewal will fail_)
+we can _either_ update the file _manually_
+***or*** using a the `dokku certs:add` command.
 
 
-There is a _command_ for making this update:
+#### 3.a _Automatically_ Add the Cert to Dokku App
+
+
+There is a _command_ for adding the certificate to a dokku app:
 
 ```sh
 dokku certs:add <app> CRT KEY   
@@ -280,11 +266,13 @@ dokku certs:add yourapp < /etc/letsencrypt/live/ademo.app/certs.tar
 ```
 e.g:
 ```sh
-dokku certs:add red < /etc/letsencrypt/live/ademo.app/certs.tar
+dokku certs:add staging < /etc/letsencrypt/live/ademo.app/certs.tar
 ```
 
-Sadly we cannot use _symbolic links_ for this ... we tried!
+<!--
+**Note**: Sadly we cannot use _symbolic links_ for this ... we tried!
 
+The following will _fail_:
 ```sh
 cd /etc/letsencrypt/live/ademo.app/
 ln -s fullchain.pem server.crt
@@ -292,11 +280,37 @@ ln -s privkey.pem server.key
 tar cvf certs.tar server.crt server.key
 dokku certs:add hello < certs.tar
 ```
+-->
 
-
-via: https://github.com/dokku/dokku/blob/master/docs/configuration/ssl.md
+via: https://github.com/dokku/dokku/blob/master/docs/configuration/ssl.md <br />
 with: https://www.hakobaito.co.uk/b/setting-up-lets-encrypt-on-dokku
 
+
+#### 3.b _Manually_ Update `nginx.conf` file
+
+If you prefer to update your `nginx.conf` _manually_ for any reason,
+you will need to locate, open and edit the `nginx.conf` file for your app.
+
+In the case of our `hello` app, the file is: `/home/dokku/hello/nginx.conf`
+
+> **Note** this will still work if you are not using Dokku/Docker,
+you simply need to find and update the right `nginx.conf` file.
+
+The only lines we changed were the two that related to the SSL cert:
+From:
+```sh
+ssl_certificate     /home/dokku/hello/tls/server.crt;
+ssl_certificate_key /home/dokku/hello/tls/server.key;
+```
+
+To:
+```sh
+ssl_certificate /etc/letsencrypt/live/ademo.app/fullchain.pem; # managed by Certbot
+ssl_certificate_key /etc/letsencrypt/live/ademo.app/privkey.pem; # managed by Certbot
+```
+
+This is where `certbot` stores the certificates, _don't move_ them
+(_or the certificate renewal will fail_)
 
 
 ### 4. Reload Nginx
@@ -312,8 +326,6 @@ You should see:
 nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
 ```
 
-
-
 ### Test The SSL!
 
 To test that the SSL/TLS certificate is setup correctly, test it!
@@ -324,9 +336,13 @@ https://www.ssllabs.com/ssltest/analyze.html?d=ademo.app
 ![ssl-report](https://user-images.githubusercontent.com/194400/40444989-c254bf82-5ec2-11e8-8f1c-95517ac1efd4.png)
 
 
+### Automating it!
 
+Once you have got your Wildcard Certificate setup,
+it's a **single command** to add it to any new apps you deploy using Dokku.
 
-
+For an _example_ of how this can be done see:
+https://github.com/nelsonic/hello-world-node-http-server/blob/5b6f2a29d8d4568cf7337a84ceecf666e50d353e/bin/deploy.sh#L47-L49
 
 
 
