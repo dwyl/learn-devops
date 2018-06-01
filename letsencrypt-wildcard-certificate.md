@@ -30,7 +30,7 @@ we suggest you use Heroku: https://github.com/dwyl/learn-heroku
 once you are _paying_ for Heroku, come back to this!
 
 
-## How?
+## How?
 
 ### 0. Pre-requisites
 
@@ -286,7 +286,7 @@ via: https://github.com/dokku/dokku/blob/master/docs/configuration/ssl.md <br />
 with: https://www.hakobaito.co.uk/b/setting-up-lets-encrypt-on-dokku
 
 
-#### 3.b _Manually_ Update `nginx.conf` file
+#### 3.b _Manually_ Update `nginx.conf` file
 
 If you prefer to update your `nginx.conf` _manually_ for any reason,
 you will need to locate, open and edit the `nginx.conf` file for your app.
@@ -326,7 +326,7 @@ You should see:
 nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
 ```
 
-### Test The SSL!
+### Test The SSL!
 
 To test that the SSL/TLS certificate is setup correctly, test it!
 e.g:
@@ -336,7 +336,7 @@ https://www.ssllabs.com/ssltest/analyze.html?d=ademo.app
 ![ssl-report](https://user-images.githubusercontent.com/194400/40444989-c254bf82-5ec2-11e8-8f1c-95517ac1efd4.png)
 
 
-### Automating it!
+### Automating it!
 
 Once you have got your Wildcard Certificate setup,
 it's a **single command** to add it to any new apps you deploy using Dokku.
@@ -362,7 +362,7 @@ https://gist.github.com/cecilemuller/a26737699a7e70a7093d4dc115915de8
 Neither of these two were for CentOS, Digital Ocean or Dokku
 so I had to "assemble" this guide from a few other sources ...
 
-## Additional Resources:
+## Additional Resources:
 
 + https://en.wikipedia.org/wiki/Automated_Certificate_Management_Environment
 + https://www.nginx.com/blog/using-free-ssltls-certificates-from-lets-encrypt-with-nginx/
