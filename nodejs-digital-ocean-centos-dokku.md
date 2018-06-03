@@ -1,6 +1,11 @@
 # Deploying Node.js App(s) to Digital Ocean
 
-A guide to deploying Node.js App(s) on Digital Ocean using Dokku.
+A guide to deploying Any App(s) to your own "Platform-as-a-Service" using Dokku.
+
+![dokku-paas-header-image](https://user-images.githubusercontent.com/194400/40890782-5509ca8a-6773-11e8-9d3e-3dda57349b88.png)
+<!-- if you can improve on, or want/need to edit this intro image, go for it!
+https://docs.google.com/drawings/d/1_JbCorCr96NeJZ9lAzkT6DT7Ze3Jw_PdXfioRLoR8IU
+-->
 
 
 ## Why?
@@ -374,11 +379,12 @@ On CentOS the file is located at:
 
 
 
-For refernce, this is the `git diff` ("before and after") the change:
+For reference, this is the `git diff` ("before and after") the change:
 https://github.com/dwyl/learn-devops/compare/82919299ceaa2d0eb308c7501b8aa95b6be2b848...2da1a06365cce145d98e293a263a8ae747fb2f01
 
 
-
+For details on nginx configuration in Dokku,
+see: https://github.com/dokku/dokku/blob/master/docs/configuration/nginx.md
 
 
 
