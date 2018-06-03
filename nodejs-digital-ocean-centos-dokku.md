@@ -225,7 +225,8 @@ Run the following commands on your DO instance:
 <!-- ```sh
 yum install wget
 ``` -->
-Install Extra Packages for Enterprise Linux ("EPEL")  https://fedoraproject.org/wiki/EPEL to get `nginx`:
+Install Extra Packages for Enterprise Linux ("EPEL")  
+https://fedoraproject.org/wiki/EPEL to get `nginx`:
 
 ```sh
 sudo yum install -y epel-release
@@ -358,6 +359,29 @@ A   *.ademo.app  138.68.163.126
 ```
 
 
+### 6.2 Configure Dokku `nginx.conf.sigil`
+
+
+Find the file:
+```
+find / -name nginx.conf.sigil
+```
+
+On CentOS the file is located at:
+```
+/var/lib/dokku/core-plugins/available/nginx-vhosts/templates/nginx.conf.sigil
+```
+
+
+
+For refernce, this is the `git diff` ("before and after") the change:
+https://github.com/dwyl/learn-devops/compare/82919299ceaa2d0eb308c7501b8aa95b6be2b848...2da1a06365cce145d98e293a263a8ae747fb2f01
+
+
+
+
+
+
 ### 7. Create a Dokku App
 
 ```sh
@@ -390,8 +414,19 @@ If you are using Dokku to deploy your app,
 run the following command on your _server_ instance:
 ```
 ssh root@138.68.163.126
-cat ~/.ssh/id_rsa.pub | sudo sshcommand acl-add dokku travis
+cat ~/.ssh/id_rsa.pub | sudo sshcommand acl-add dokku root
 ```
+
+#### 7.b Need to _Remove_ the Dokku User?
+
+```
+sshcommand acl-remove <USER> <NAME>
+```
+e.g:
+```sh
+sshcommand acl-remove dokku root
+```
+
 
 ### 8. Add Dokku Git Remote
 
@@ -584,7 +619,7 @@ ps waux | grep nginx
 ```
 
 e.g:
-```sh
+```sh<br <>br <>br <>br <>br <>br <>br <>br <>br <>br <>br <>br <>br <>b
 root     14575  0.0  0.0 112704   968 pts/0    S+   20:39   0:00 grep --color=auto nginx
 root     19119  0.0  0.2 141272  2100 ?        Ss   18:31   0:00 nginx: master process nginx
 nginx    19120  0.0  0.3 141660  3572 ?        S    18:31   0:00 nginx: worker process
@@ -594,6 +629,10 @@ nginx    19120  0.0  0.3 141660  3572 ?        S    18:31   0:00 nginx: worker p
 
 ```sh
 kill $(ps aux | grep '[n]ginx' | awk '{print $2}')
+```
+or the _cleaner_ version:
+```sh
+pkill nginx
 ```
 
 
@@ -662,6 +701,8 @@ docker -D info
 
 
 
+
+
 ## Background / Further Reading
 
 + https://github.com/dokku/dokku
@@ -675,7 +716,15 @@ https://stackoverflow.com/questions/29801570/see-git-commit-hash-of-running-dokk
 + How To Set Up Nginx Server Blocks (Virtual Hosts)  
 https://www.digitalocean.com/community/tutorials/how-to-set-up-nginx-server-blocks-virtual-hosts-on-ubuntu-16-04
 + Nginx Reverse Proxy (_good docs):
-https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/
+https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy
++ How to set up TravisCI for projects that push back to github
+https://gist.github.com/willprice/e07efd73fb7f13f917ea
++ Deploy With Travis CI and Git
+https://jorin.me/deploy-with-travis-and-git/ (v. "high level"...)
++ Deploying from Travis CI to dokku:
+http://blog.abarbanell.de/linux/2017/09/09/deploy-from-travis-to-dokku
++ push a specific commit to a remote:
+ https://stackoverflow.com/questions/3230074/how-can-i-push-a-specific-commit-to-a-remote-and-not-previous-commits
 
 ## Credits
 
