@@ -60,7 +60,8 @@ echo "vagrant.log >> .gitignore"
 We're using Travis-CI to both test and (_automatically_) _deploy_ our application.
 
 If you are new to Travis-CI, see:
-[github.com/dwyl/**learn-travis**](https://github.com/dwyl/learn-travis)
+[https://github.com/dwyl/**learn-travis**](https://github.com/dwyl/learn-travis)
+
 
 
 ### Create an RSA Key for Deployment
