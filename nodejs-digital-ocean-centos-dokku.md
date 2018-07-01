@@ -219,7 +219,6 @@ sshcommand acl-remove dokku root
 
 
 
-
 ### 4. Configure Custom Domain Name (Optional/Recommend)
 
 
@@ -399,7 +398,7 @@ dokku domains:add-global ademo.app
 
 via: http://dokku.viewdocs.io/dokku/configuration/domains/#customizing-hostnames
 
-#### 5.X Quick "Progress" Check
+#### 5.5 Quick "Progress" Check
 
 To _confirm_ that everything installed ok,
 visit the IP Address of your droplet e.g: http://138.68.163.126
@@ -466,7 +465,6 @@ You should see:
 ```
 
 
-
 ### 8. Add Dokku Git Remote
 
 
@@ -484,7 +482,7 @@ git push dokku master
 ![image](https://user-images.githubusercontent.com/194400/40329183-a744e4e8-5d40-11e8-8bd0-325de5d25b53.png)
 
 
-
+<!--
 ### 9. Add App to Domain
 ```
 dokku domains:enable hello
@@ -493,13 +491,26 @@ dokku domains:enable hello
 ### 10. Configure the "Main" Domain for the Instance
 
 http://dokku.viewdocs.io/dokku/configuration/nginx
+-->
+
+### 9. LetsEncrypt Wildcard SSL Certificate!
+
+In order to have multiple subdomains on the same server,
+e.g: `hello.ademo.app` and `awesome-word-game.ademo.app`
+you will need to have a Wildcard SSL Certificate!
+
+Thankfully you can get one for _free_ with about 10 mins work.
+We wrote a _separate_ (_self-contained_) tutorial for that:
+
+[letsencrypt-wildcard-certificate.md](https://github.com/dwyl/learn-devops/blob/master/letsencrypt-wildcard-certificate.md)
+
+once you have finished setting it up, return here and continue.
 
 
 
+### 10. Confirm it Was not a "Fluke"!
 
-### 11. Confirm it Was not a "Fluke"!
-
-#### 11.1 Create New Dokku App on Instance
+#### 10.1 Create New Dokku App on Instance
 
 Create a `new` Dokku app (_on the instance_):
 
@@ -511,7 +522,7 @@ Output (_you should see_):
 -----> Creating hello-world-node... done
 ```
 
-#### 11.2 Add a git remote for the app
+#### 10.2 Add a git remote for the app
 
 ```
 git remote add dokku dokku@138.68.163.126:hello-world-node
@@ -532,16 +543,7 @@ So it will be deployed.
 
 
 
-
-
-
-
-
-
-
-
-
-### 12. nginx Server Root and Configuration
+### 11. nginx Server Root and Configuration
 
 Dokku uses nginx as its server for routing requests to specific applications.
 
@@ -582,6 +584,9 @@ e.g:
 ```
 
  nginx -t -c /etc/nginx/conf.d/dokku.conf
+
+
+
 
 
 <br />
@@ -708,7 +713,7 @@ docker -D info
 https://stackoverflow.com/questions/29801570/see-git-commit-hash-of-running-dokku-app
 + How To Set Up Nginx Server Blocks (Virtual Hosts)  
 https://www.digitalocean.com/community/tutorials/how-to-set-up-nginx-server-blocks-virtual-hosts-on-ubuntu-16-04
-+ Nginx Reverse Proxy (_good docs):
++ Nginx Reverse Proxy (_good docs_):
 https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy
 + How to set up TravisCI for projects that push back to github
 https://gist.github.com/willprice/e07efd73fb7f13f917ea
@@ -726,7 +731,7 @@ This tutorial stands on the shoulders of _several_ giants.
 The _particular_ "guide" we found the _most_ useful
 was written by Gleb Bahmutov [`@bahmutov`](https://github.com/bahmutov)
 https://glebbahmutov.com/blog/running-multiple-applications-in-dokku
-PDF snapshot: [running-multiple-applications-in-dokku.pdf](https://github.com/dwyl/learn-devops/files/2023606/running-multiple-applications-in-dokku.pdf)
+PDF snapshot: [running-multiple-applications-in-dokku.pdf](https://github.com/dwyl/learn-devops/files/2023606/running-multiple-applications-in-dokku.pdf) <br />
 His post is 2 years old, uses a much older version Dokku,
 and is focussed on Ubuntu, so we had to fill-in quite a few "gaps".
 But on the whole, it's a _superb_ post!
@@ -750,7 +755,9 @@ see:
 
 #### `DOKKU_PROXY_PORT_MAP`
 
-By default Dokku sets the
+By default Dokku sets the App's TCP Port to `5000`.
+Unless you have a _very good_ reason to change it, leave it as the default.
+If you see the following error message:
 
 ```
 -----> Configuring ademo.app...(using built-in template)
@@ -769,6 +776,8 @@ Job for nginx.service invalid.
 Job for nginx.service invalid.
 ```
 
+It's because you are attempting to override the `PORT` environment variable.
+(_we learned this he **hard way** ... don't make the same mistake!_)
 
 
 <!--
