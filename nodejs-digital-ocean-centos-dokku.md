@@ -184,7 +184,38 @@ So our **next step** we will create a new user called_: `deploy`
 _with reduced privileges_.
 -->
 
-### 3. Create the `deploy` User on the Instance
+
+### 3. Add Dokku user on `localhost`
+
+On your _localhost_ (_the machine you are typing on_)
+you will need to have a `dokku` ssh user:
+
+
+```sh
+cat ~/.ssh/id_rsa.pub | ssh root@<ip4> "sudo sshcommand acl-add dokku root"
+```
+
+e.g:
+```sh
+cat ~/.ssh/id_rsa.pub | ssh root@138.68.163.126 "sudo sshcommand acl-add dokku root"
+```
+
+If you are using Dokku to deploy your app,
+run the following command on your _server_ instance:
+```
+ssh root@138.68.163.126
+cat ~/.ssh/id_rsa.pub | sudo sshcommand acl-add dokku root
+```
+
+#### 3.b Need to _Remove_ the Dokku User?
+
+```
+sshcommand acl-remove <USER> <NAME>
+```
+e.g:
+```sh
+sshcommand acl-remove dokku root
+```
 
 
 
@@ -226,7 +257,7 @@ point DNS servers at the DigitalOcean's name servers:
 ![do-cetos-ademo-app-dns](https://user-images.githubusercontent.com/194400/41946140-c918da82-79a8-11e8-91c5-0810513e9796.png)
 ![do-cents-ademo-dns-full](https://user-images.githubusercontent.com/194400/40325945-80c6ac8a-5d35-11e8-8ff1-000caa8f296f.png)
 
-This indicates the settings update is "saving" ...
+This indicates the settings update is in progress ... <br />
 ![dns-settings-updated](https://user-images.githubusercontent.com/194400/40325773-e206ace4-5d34-11e8-9697-82629244a54d.png)
 
 
@@ -240,7 +271,7 @@ e.g:
 ```sh
 whois ademo.app | grep "Name Server"
 ```
-You should see something like this:
+You should see something like this: <br />
 ![image](https://user-images.githubusercontent.com/194400/40325923-69823cf6-5d35-11e8-808c-448bc510b03a.png)
 
 
@@ -260,14 +291,11 @@ https://www.digitalocean.com/community/tutorials/an-introduction-to-digitalocean
 #### 5.1 Install Docker (Dependency)
 
 Given that there is no "package" for CentOS we need to
-install `dokku` _manually_ using the "advanced" instructions
-http://dokku.viewdocs.io/dokku/getting-started/advanced-installation/
+install `dokku` _manually_ using the "advanced" instructions: <br />
+http://dokku.viewdocs.io/dokku/getting-started/advanced-installation
 
-Run the following commands on your DO instance:
-<!-- ```sh
-yum install wget
-``` -->
-Install Extra Packages for Enterprise Linux ("EPEL")  
+Run the following commands on your DO instance
+to install Extra Packages for Enterprise Linux ("EPEL")  
 https://fedoraproject.org/wiki/EPEL to get `nginx`:
 
 ```sh
@@ -293,6 +321,7 @@ sudo dokku plugin:install-dependencies --core
 ```
 
 ![image](https://user-images.githubusercontent.com/194400/40327556-53261c6a-5d3b-11e8-9615-6c32a8f8fe58.png)
+
 That will install quite a _few_ packages, go for a walk.
 
 ![image](https://user-images.githubusercontent.com/194400/40327867-499e990a-5d3c-11e8-9f2e-a748c2c51da5.png)
@@ -438,39 +467,6 @@ You should see:
 
 
 
-### 7. Add Dokku user on `localhost`
-
-On your _localhost_ (_the machine you are typing on_)
-you will need to have a `dokku` ssh user:
-
-
-```sh
-cat ~/.ssh/id_rsa.pub | ssh root@<ip4> "sudo sshcommand acl-add dokku root"
-```
-
-e.g:
-```sh
-cat ~/.ssh/id_rsa.pub | ssh root@138.68.163.126 "sudo sshcommand acl-add dokku root"
-```
-
-If you are using Dokku to deploy your app,
-run the following command on your _server_ instance:
-```
-ssh root@138.68.163.126
-cat ~/.ssh/id_rsa.pub | sudo sshcommand acl-add dokku root
-```
-
-#### 7.b Need to _Remove_ the Dokku User?
-
-```
-sshcommand acl-remove <USER> <NAME>
-```
-e.g:
-```sh
-sshcommand acl-remove dokku root
-```
-
-
 ### 8. Add Dokku Git Remote
 
 
@@ -508,19 +504,17 @@ http://dokku.viewdocs.io/dokku/configuration/nginx
 Create a `new` Dokku app (_on the instance_):
 
 ```sh
-dokku apps:create red
+dokku apps:create hello-world-node
 ```
 Output (_you should see_):
 ```sh
------> Creating red... done
+-----> Creating hello-world-node... done
 ```
 
-#### 11.2
-
-Add a git remote for the app:
+#### 11.2 Add a git remote for the app
 
 ```
-git remote add dokku dokku@138.68.163.126:red
+git remote add dokku dokku@138.68.163.126:hello-world-node
 ```
 Now push the app to the Dokku server:
 
@@ -547,53 +541,7 @@ So it will be deployed.
 
 
 
-#### Failure ...
-
-```
-To 138.68.163.126:hello-dokku
- ! [remote rejected] dokku-paas-deployment-issue#24 -> master (pre-receive hook declined)
-error: failed to push some refs to 'dokku@138.68.163.126:hello-dokku'
-```
-
-#### `DOKKU_PROXY_PORT_MAP` Change
-
-
-
-```
------> Configuring ademo.app...(using built-in template)
------> Configuring hello-dokku....(using built-in template)
------> Configuring hello-dokku.ademo.app...(using built-in template)
------> Creating https nginx.conf
------> Running nginx-pre-reload
-       Reloading nginx
-Job for nginx.service invalid.
------> Configuring ademo.app...(using built-in template)
------> Configuring hello-dokku....(using built-in template)
------> Configuring hello-dokku.ademo.app...(using built-in template)
------> Creating https nginx.conf
------> Running nginx-pre-reload
-       Reloading nginx
-Job for nginx.service invalid.
-```
-
-
-
-
-### XX. Add Temporary SSL/TLS Certificate
-
-```sh
-dokku certs:generate <app> DOMAIN
-```
-e.g:
-```sh
-dokku certs:generate hello ademo.app
-```
-
-
-
-
-
-### nginx Server Root and Configuration
+### 12. nginx Server Root and Configuration
 
 Dokku uses nginx as its server for routing requests to specific applications.
 
@@ -635,6 +583,8 @@ e.g:
 
  nginx -t -c /etc/nginx/conf.d/dokku.conf
 
+
+<br />
 
 ## Useful Dokku / Nginx Commands
 
@@ -780,3 +730,55 @@ PDF snapshot: [running-multiple-applications-in-dokku.pdf](https://github.com/dw
 His post is 2 years old, uses a much older version Dokku,
 and is focussed on Ubuntu, so we had to fill-in quite a few "gaps".
 But on the whole, it's a _superb_ post!
+
+
+### Toubleshooting
+
+#### "failed to push some refs"
+
+```
+To 138.68.163.126:hello-dokku
+ ! [remote rejected] dokku-paas-deployment-issue#24 -> master (pre-receive hook declined)
+error: failed to push some refs to 'dokku@138.68.163.126:hello-dokku'
+```
+
+I ended up having to "kill" the `nginx` server ***`before`***
+pushing the app to the server.
+
+see:
+[/bin/deploy.sh#L32-L38](https://github.com/nelsonic/hello-world-node-http-server/blob/5b6f2a29d8d4568cf7337a84ceecf666e50d353e/bin/deploy.sh#L32-L38)
+
+#### `DOKKU_PROXY_PORT_MAP`
+
+By default Dokku sets the
+
+```
+-----> Configuring ademo.app...(using built-in template)
+-----> Configuring hello-dokku....(using built-in template)
+-----> Configuring hello-dokku.ademo.app...(using built-in template)
+-----> Creating https nginx.conf
+-----> Running nginx-pre-reload
+       Reloading nginx
+Job for nginx.service invalid.
+-----> Configuring ademo.app...(using built-in template)
+-----> Configuring hello-dokku....(using built-in template)
+-----> Configuring hello-dokku.ademo.app...(using built-in template)
+-----> Creating https nginx.conf
+-----> Running nginx-pre-reload
+       Reloading nginx
+Job for nginx.service invalid.
+```
+
+
+
+<!--
+### XX. Add Temporary SSL/TLS Certificate
+
+```sh
+dokku certs:generate <app> DOMAIN
+```
+e.g:
+```sh
+dokku certs:generate hello ademo.app
+```
+-->
