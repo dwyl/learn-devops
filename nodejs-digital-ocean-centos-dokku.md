@@ -1,4 +1,4 @@
-# Deploying Node.js App(s) to Digital Ocean
+# Deploying Any App(s) Using Dokku PaaS
 
 A guide to deploying Any App(s) to your own "Platform-as-a-Service" using Dokku.
 
@@ -6,7 +6,9 @@ A guide to deploying Any App(s) to your own "Platform-as-a-Service" using Dokku.
 <!-- if you can improve on, or want/need to edit this intro image, go for it!
 https://docs.google.com/drawings/d/1_JbCorCr96NeJZ9lAzkT6DT7Ze3Jw_PdXfioRLoR8IU
 -->
-
+<br />
+Like having your own (_self-managed/hosted_) Heroku platform
+with full VM access/control at a _fraction_ of the cost.
 
 ## Why?
 
@@ -15,13 +17,27 @@ to the _same_ Digital Ocean VPS/instance.
 
 Digital Ocean is a _great_ alternative
 to the "main" cloud providers (Amazon, Google & Microsoft);
-it has a _much_ more intuitive control panel
-which means you can get your "DevOps" work don a _lot_ faster!
+it has a _much_ more intuitive (_UX-focussed_) "control panel"
+which means you can get your "DevOps" learning and _work_ done a _lot_ faster!
+
+### Why _Not_?
+
+Managing your own infrastructure (or "Platform") is a "**rabbit hole**";
+it might be _easy_ to get started, but if (_when_) things go "wrong",
+it can take a while to _understand_ the issue (_lots of googling!_).
+This is "OK" if you are the type of person who _enjoys debugging_ Docker/Linux,
+but if you prefer focus on the _features_ of your App, let someone `else`
+handle the infra/PaaS until you achieve "critical mass" and can afford
+to hire a _professional_ DevOps person.
 
 
 ## What?
 
-We will be using the following:
+Deploy "unlimited"<sup>1</sup> apps to a Virtual Private Server (VPS) instance
+with great service quality and minimal cost.
+
+
+In this guide we will be using the following:
 
 + Digital Ocean Droplet (Virtual Private Server "VPS")
 + CentOS (Operating System) - though any "mainstream linux" will work,
@@ -39,15 +55,18 @@ it will cost you **0.007 cents** (less than **one cent**)_.
 _If you chose to **use** this method for running your apps it will
 cost you $5/month which is cheaper than the **cheapest** paid tier on Heroku,
 and since we will cover how to run **multiple apps**,
-it will cost you about a $1 per month (per app) if you run 5 apps.
-Crucially, the service quality/speed will be **much better** than
+it will cost you **less than $1 per month** (per app) if you run 5+ apps.
+Crucially, the **service quality/speed** will be **much better** than
 the "free apps" on Heroku!_
+
+<sup>1</sup>"unlimited" apps is not _strictly_ true;
+we _are_ limited by the RAM resources of the instance.
 
 
 ## Who?
 
-Anyone that needs to deploy one or _more_ App(s) to Digial Ocean
-and needs a _step-by-step_ guide.
+Anyone that needs to deploy one or _more_ App(s)
+to DigitalOcean and needs a _step-by-step_ guide.
 
 
 ## _When_?
@@ -63,22 +82,24 @@ deploying a Node.js app, we **highly recommend** following the_
 [`https://github.com/dwyl/learn-heroku`](https://github.com/dwyl/learn-heroku)
 _guide **first**_. <br />
 
-_**Bookmark** (**Star**) this repo/tutorial now so you can return to it
+> _**Bookmark** (**Star**) this repo/tutorial **now** so you can return to it
 when you are spending more than **$10/month** on **Heroku**;
 it does not make sense to run your own "PaaS" before then!_
 
 
-
 ## How?
 
-These are _step-by-step_ instructions, follow them in order
-and don't skip steps!
+These are _step-by-step_ instructions,
+follow them in order
+and _don't skip_ steps!
 
 ### 0. Pre-requisites
 
 _Before_ we start, please ensure you have the following:
 
-+ [x] Digital Ocean Account (_see above for link if you don't have one!_)
++ [x] Digital Ocean Account
+(_New to "DO"? Please use this link:_ https://m.do.co/c/29379863a4f8
+_to register_)
   + [x] Public SSH Key uploaded to https://cloud.digitalocean.com/settings/security
   (_so that you can login to the instance we are about to launch!_)
   see: https://www.digitalocean.com/community/tutorials/how-to-use-ssh-keys-with-digitalocean-droplets
@@ -97,7 +118,7 @@ The instance we are creating is a **CentOS 7.5** Droplet with **1GB RAM**.
 
 ![digital-ocean-dokku-create-droplet](https://user-images.githubusercontent.com/194400/40320319-2adb2f92-5d23-11e8-88c7-74c9aab084dc.png)
 
-Select your desired region (_datacenter_).
+Select your desired region (_datacenter_);
 (_pick the nearest to your users or dev team_) e.g:
 
 ![digital-ocean-dokku-choose-region](https://user-images.githubusercontent.com/194400/40320737-943863c8-5d24-11e8-8c42-fd8ceb2ec4bc.png)
@@ -107,6 +128,10 @@ is: `centos-s-1vcpu-1gb-lon1-01` let's change that to: `centos-dokku-paas`
 so that we know what the instance _does_ from reading it's hostname.
 
 ![digital-ocean-dokku-default-hostname](https://user-images.githubusercontent.com/194400/40320799-bd9da58e-5d24-11e8-9812-62560338e6ac.png)
+
+> This also means that if/when we "scale" the instance up
+we don't need to **rename** it when the CPU/RAM changes.
+<br />
 
 `hostname` updated:
 ![dokku-hostname-updated](https://user-images.githubusercontent.com/194400/40320800-bdb615c4-5d24-11e8-9b75-9f876c58c490.png)
@@ -133,7 +158,8 @@ We only tend to use the web-based console when on a device
 that does not have a "_native_" terminal app. (_e.g: an iPad_)
 
 get the instance's IP (v4) Address, e.g: `138.68.163.126`
-and paste the following command into your terminal:
+and run the following command into your terminal
+to **login** to the instance **via SSH**:
 
 ```sh
 ssh root@138.68.163.126
@@ -144,17 +170,19 @@ While logged in as `root` run the _update_ command:
 ```sh
 yum update
 ```
-There are _security_ updates:
+There are _security_ updates: <br />
 ![image](https://user-images.githubusercontent.com/194400/40326841-9e2c5b6e-5d38-11e8-9313-66e369777807.png)
 
-Update complete:
+Update complete: <br />
 ![image](https://user-images.githubusercontent.com/194400/40326822-8e8e5bda-5d38-11e8-83d1-f8fa03520e17.png)
 
+<!--
 > _**Note**:_ `root` _is the_ `default` _user for Digital Ocean instances,
 we prefer to **minimise** the activity of "root" or `sudo` users
 on our instances for security.
 So our **next step** we will create a new user called_: `deploy`
 _with reduced privileges_.
+-->
 
 ### 3. Create the `deploy` User on the Instance
 
@@ -163,12 +191,21 @@ _with reduced privileges_.
 
 ### 4. Configure Custom Domain Name (Optional/Recommend)
 
-Get domain and point DNS record at the droplet.
+
+In this section we'll walk through:
++ Finding and registering a domain name
++ Point the domain's DNS record to DigitalOcean
+so the "droplet" is configured to receive all traffic for all subdomains.
+
+> _**Note**: If you **already have** a domain name you can use for this,
+then skip the registration step. <br />
+You will still need to "point" the domain's
+DNS to DigitalOcean for the rest to work_.
 
 #### 4.1 Register the Domain
 
 We registered a custom domain name as we intend to use
-this server to host multiple "demo" apps,
+this server to host multiple "demo" apps, <br />
 `ademo.app` seemed like a _logical_ name for the domain.
 
 We use https://domainr.com to _lookup_ if the domain is available:
@@ -186,7 +223,7 @@ point DNS servers at the DigitalOcean's name servers:
   + ns2.digitalocean.com
   + ns3.digitalocean.com
 
-![do-cetos-ademo-app-dns](https://user-images.githubusercontent.com/194400/40325944-80b01092-5d35-11e8-8e62-8170cdc67658.png)
+![do-cetos-ademo-app-dns](https://user-images.githubusercontent.com/194400/41946140-c918da82-79a8-11e8-91c5-0810513e9796.png)
 ![do-cents-ademo-dns-full](https://user-images.githubusercontent.com/194400/40325945-80c6ac8a-5d35-11e8-8ff1-000caa8f296f.png)
 
 This indicates the settings update is "saving" ...
