@@ -42,7 +42,8 @@ In this guide we will be using the following:
 + Digital Ocean Droplet (Virtual Private Server "VPS")
 + CentOS (Operating System) - though any "mainstream linux" will work,
 and Ubuntu/Debian is the most _popular_.
-+ Dokku "Platform as a Service"
++ Dokku "Platform as a Service" ("PaaS") based on Docker.
++ LetsEncrypt Free SSL Certificates.
 
 If you do not _already_ have a Digital Ocean account,
 please use the following link to register: https://m.do.co/c/29379863a4f8
@@ -104,6 +105,7 @@ _to register_)
   (_so that you can login to the instance we are about to launch!_)
   see: https://www.digitalocean.com/community/tutorials/how-to-use-ssh-keys-with-digitalocean-droplets
 + [x] Basic Node.js knowledge
+(_but this guide works for **Any** app e.g: Ruby, Python, Elixir, Go, Java, Scala, etc!_)
 + [x] 30 mins of time.
 
 ### 1. Create the DigitalOcean Instance
@@ -176,19 +178,16 @@ There are _security_ updates: <br />
 Update complete: <br />
 ![image](https://user-images.githubusercontent.com/194400/40326822-8e8e5bda-5d38-11e8-83d1-f8fa03520e17.png)
 
-<!--
-> _**Note**:_ `root` _is the_ `default` _user for Digital Ocean instances,
+`root` _is the_ `default` _user for Digital Ocean instances,
 we prefer to **minimise** the activity of "root" or `sudo` users
 on our instances for security.
-So our **next step** we will create a new user called_: `deploy`
+So our **next step** we will create a new user called_: `dokku`
 _with reduced privileges_.
--->
 
 
-### 3. Add Dokku user on `localhost`
+### 3. Add `dokku` User
 
-On your _localhost_ (_the machine you are typing on_)
-you will need to have a `dokku` ssh user:
+Create a `dokku` user on the server (_so that we can avoid running as `root`_)""
 
 
 ```sh
@@ -200,14 +199,15 @@ e.g:
 cat ~/.ssh/id_rsa.pub | ssh root@138.68.163.126 "sudo sshcommand acl-add dokku root"
 ```
 
-If you are using Dokku to deploy your app,
-run the following command on your _server_ instance:
+If you are already logged into the server,
+run the following command:
 ```
-ssh root@138.68.163.126
 cat ~/.ssh/id_rsa.pub | sudo sshcommand acl-add dokku root
 ```
 
-#### 3.b Need to _Remove_ the Dokku User?
+#### 3.i Need to _Remove_ the Dokku User?
+
+If you ever need to _remove_ the `dokku` user on the instance, run:
 
 ```
 sshcommand acl-remove <USER> <NAME>
@@ -262,7 +262,7 @@ This indicates the settings update is in progress ... <br />
 
 #### 4.3 Verify the Domain Servers using `whois` Command
 
-Verify that the new domain servers are listed in
+Verify that the new domain servers are listed by running the `whois` command:
 ```sh
 $ whois <domain.com> | grep "Name Server"
 ```
@@ -274,20 +274,30 @@ You should see something like this: <br />
 ![image](https://user-images.githubusercontent.com/194400/40325923-69823cf6-5d35-11e8-808c-448bc510b03a.png)
 
 
-
-4. From the DO droplet's actions pick "Add Domain" and enter the new domain <domain.com>
-5. There should be nothing to do, there is already a default @ <ip4> A record created
-6. Add wild card mapping for everything else to the same domain - A record * <ip4>
-Note just enter a wildcard `"*"` in the first column, and <ip4> address in the second.
-7. You should see the following text in the record on the config page
-
 #### Background Reading for DNS on Digital Ocean
 
 https://www.digitalocean.com/community/tutorials/an-introduction-to-digitalocean-dns
 
-### 5.Install Dokku
+> Now that we know the domain (DNS) is configured to "point" to DigitalOcean
+we can move on to creating the SSL Certificate for the domain!
 
-#### 5.1 Install Docker (Dependency)
+### 5. LetsEncrypt Wildcard SSL Certificate!
+
+In order to have multiple subdomains on the same server,
+e.g: `hello.ademo.app` and `awesome-word-game.ademo.app`
+you will need to have a Wildcard SSL Certificate!
+
+Thankfully you can get one for _free_ with about 10 mins work.
+We wrote a _separate_ (_self-contained_) tutorial for that:
+
+[letsencrypt-wildcard-certificate.md](https://github.com/dwyl/learn-devops/blob/master/letsencrypt-wildcard-certificate.md)
+
+once you have finished setting it up, return here and continue.
+
+
+### 6.Install Dokku
+
+#### 6.1 Install Docker (Dependency)
 
 Given that there is no "package" for CentOS we need to
 install `dokku` _manually_ using the "advanced" instructions: <br />
@@ -311,8 +321,10 @@ curl -fsSL https://get.docker.com/ | sudo sh
 
 
 
+#### 6.2 Install Dokku
 
-#### 5.2 Install Dokku
+Once Docker is installed, proceed to installing Dokku using the following script:
+
 ```sh
 curl -s https://packagecloud.io/install/repositories/dokku/dokku/script.rpm.sh | sudo bash
 sudo yum install -y herokuish dokku
@@ -321,12 +333,12 @@ sudo dokku plugin:install-dependencies --core
 
 ![image](https://user-images.githubusercontent.com/194400/40327556-53261c6a-5d3b-11e8-9615-6c32a8f8fe58.png)
 
-That will install quite a _few_ packages, go for a walk.
+That will install quite a _few_ packages, so go for a walk!
 
 ![image](https://user-images.githubusercontent.com/194400/40327867-499e990a-5d3c-11e8-9f2e-a748c2c51da5.png)
 
 
-#### 5.3 Install Dokku LetsEncrypt Plugin
+#### 6.3 Install Dokku LetsEncrypt Plugin
 
 ```sh
 sudo dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git
@@ -360,30 +372,8 @@ Adding user dokku to group adm
 -----> Priming bash-completion cache
 ```
 
-<!--
-#### 5.4 Firewall Settings
 
-On the instance run the following commands to install the `firewalld` tool:
-
-```sh
-sudo yum install firewalld -y
-sudo systemctl enable firewalld
-sudo reboot
-```
-at this point you will need to log back into the server as your SSH will be terminated.
-
-Now run the following to open ports 80 and 443:
-```sh
-sudo firewall-cmd --permanent --zone=public --add-service=http
-sudo firewall-cmd --permanent --zone=public --add-service=https
-sudo firewall-cmd --reload
-```
-
-https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-using-firewalld-on-centos-7
-
--->
-
-#### 5.4 Add Domain to Dokku
+#### 6.4 Add Domain to Dokku
 
 Add the desired domain to dokku so that it knows
 we want to deploy our app(s) to that.
@@ -398,17 +388,17 @@ dokku domains:add-global ademo.app
 
 via: http://dokku.viewdocs.io/dokku/configuration/domains/#customizing-hostnames
 
-#### 5.5 Quick "Progress" Check
+
+<!--
+#### 6.6 Quick "Progress" Check
 
 To _confirm_ that everything installed ok,
 visit the IP Address of your droplet e.g: http://138.68.163.126
 ![image](https://user-images.githubusercontent.com/194400/40328106-2763230a-5d3d-11e8-9be0-beb70ce960c1.png)
+-->
 
 
-
-
-
-### 6. Configure Dokku
+### 7. Configure Dokku
 
 Run the following commands (on the instance) to add your ssh (public) key
 to the `dokku` user:
@@ -418,7 +408,7 @@ sudo chown dokku:dokku /home/dokku/.ssh/dokku.pub
 sudo dokku ssh-keys:add dokku /home/dokku/.ssh/dokku.pub
 ```
 
-#### 6.1 Create the `/home/dokku/VHOST` File
+#### 7.1 Create the `/home/dokku/VHOST` File
 
 ```
 vi /home/dokku/VHOST
@@ -429,7 +419,7 @@ A   *.ademo.app  138.68.163.126
 ```
 
 
-### 6.2 Configure Dokku `nginx.conf.sigil`
+### 7.2 Configure Dokku `nginx.conf.sigil`
 
 
 Find the file:
@@ -453,8 +443,9 @@ see: https://github.com/dokku/dokku/blob/master/docs/configuration/nginx.md
 
 
 
-### 7. Create a Dokku App
+### 8. Create a Dokku App
 
+Run this command while logged in (via SSH) to the DO instance:
 ```sh
 dokku apps:create hello
 ```
@@ -464,11 +455,20 @@ You should see:
 -----> Creating hello... done
 ```
 
+#### 8.1 Add the SSL Certificate to the App
 
-### 8. Add Dokku Git Remote
+```sh
+dokku certs:add yourapp < /etc/letsencrypt/live/ademo.app/certs.tar
+```
+e.g:
+```sh
+dokku certs:add hello < /etc/letsencrypt/live/ademo.app/certs.tar
+```
+
+### 9. Add Dokku Git Remote
 
 
-using https://github.com/nelsonic/ac/ as my "hello" app.
+using https://github.com/nelsonic/hello-world-node-http-server as my "hello world" app.
 
 ```
 git remote add dokku dokku@138.68.163.126:hello
@@ -479,7 +479,15 @@ Now push the app to the Dokku server:
 git push dokku master
 ```
 
+You should see output similar to the following:
+
 ![image](https://user-images.githubusercontent.com/194400/40329183-a744e4e8-5d40-11e8-8bd0-325de5d25b53.png)
+
+#### 9.1 Confirm The App Deployed Successfully
+
+In our case we deployed our `hello` app to: https://hello.ademo.app
+
+![hello-world-example-app](https://user-images.githubusercontent.com/194400/42243002-d2c3ad82-7f07-11e8-9bf4-5a9ce6098020.png)
 
 
 <!--
@@ -493,22 +501,8 @@ dokku domains:enable hello
 http://dokku.viewdocs.io/dokku/configuration/nginx
 -->
 
-### 9. LetsEncrypt Wildcard SSL Certificate!
 
-In order to have multiple subdomains on the same server,
-e.g: `hello.ademo.app` and `awesome-word-game.ademo.app`
-you will need to have a Wildcard SSL Certificate!
-
-Thankfully you can get one for _free_ with about 10 mins work.
-We wrote a _separate_ (_self-contained_) tutorial for that:
-
-[letsencrypt-wildcard-certificate.md](https://github.com/dwyl/learn-devops/blob/master/letsencrypt-wildcard-certificate.md)
-
-once you have finished setting it up, return here and continue.
-
-
-
-### 10. Confirm it Was not a "Fluke"!
+### 10. Deploy Another App to _Prove_ it Was not a "Fluke"!
 
 #### 10.1 Create New Dokku App on Instance
 
@@ -540,10 +534,19 @@ git push dokku dokku-paas-deployment-issue#24:master
 This pushes the _branch_ but tells Dokku to treat it as `master`
 So it will be deployed.
 
+The "new" app `hello-world-node` was successfully deployed to:
+https://hello-world-node.ademo.app
+![hello-world-node](https://user-images.githubusercontent.com/194400/42243190-61f49aa2-7f08-11e8-9cc4-b52dc54bca70.png)
 
 
+# Done!
 
-### 11. nginx Server Root and Configuration
+You have successfully deployed your first App to A Dokku PaaS!
+
+
+<br />
+
+### nginx Server Root and Configuration
 
 Dokku uses nginx as its server for routing requests to specific applications.
 
@@ -737,7 +740,7 @@ and is focussed on Ubuntu, so we had to fill-in quite a few "gaps".
 But on the whole, it's a _superb_ post!
 
 
-### Toubleshooting
+### Troubleshooting
 
 #### "failed to push some refs"
 
