@@ -32,85 +32,60 @@ to use a _specific_ "cloud" provider.
 
 Everyone that wants to _seriously consider/call_ themself
 a "***Full Stack***" **Developer** ***must*** know how to deploy,
-secure and monitor their app on their chosen infrastructure.
+_secure_ and _monitor_ their app on their chosen infrastructure.
 
 
 ## How?
 
-This tutorial uses a ***Linode*** Virtual Machine,
-if you are new to Linode we prepared a _quick_ start guide:
-[`linode-setup.md`]()
+Over the years we @dwyl have deployed/managed Apps,
+both our own and those of our clients,
+on a wide variety of infrastructure and platform providers.
 
-Once you have a running Linode instance,
-we can move onto setting up deployment.
+_Most_ of our Apps have been deployed to **Amazon Web Services** ("**AWS**")
+e.g: https://www.sciencemuseum.org.uk  <br />
+We have _several_ clients who use (_and **love**_) Heroku e.g:
+https://www.ellenmacarthurfoundation.org <br />
+For the National Health Service (NHS) in England,
+(_who have a major contract with Microsoft_) we deployed
+https://www.healthlocker.uk to Azure. <br />
+We have clients who still own their own "_Bare Metal_" Servers.
 
-Initialize Vagrant VM:
-```
-vagrant up --debug &> vagrant.log
-```
-> Note: ensure you add the `vagrant.log` to your `.gitignore` file
-as it's **thousands of lines** which change each time an instance
-is created. e.g:
-```
-echo "vagrant.log >> .gitignore"
-```
+### Provider-Specific Guides
 
-### Travis-CI Continuous Delivery
+We have produced a guide for each of our most-used
+infrastructure/platform providers:
 
-We're using Travis-CI to both test and (_automatically_) _deploy_ our application.
++ AWS: https://github.com/dwyl/learn-amazon-web-services
++ AWS Lambda: https://github.com/dwyl/learn-aws-lambda
++ Azure: https://github.com/dwyl/learn-microsoft-azure
++ Heroku: https://github.com/dwyl/learn-heroku
++ Linode: [linode-setup.md](https://github.com/dwyl/learn-devops/blob/master/linode-setup.md)
++ DigitalOcean: [nodejs-digital-ocean-centos-dokku.md](https://github.com/dwyl/learn-devops/blob/master/nodejs-digital-ocean-centos-dokku.md)
 
-If you are new to Travis-CI, see:
+
+> If you would like to see a guide for a _different_ service provider,
+please open an issue with your suggestion(s):
+https://github.com/dwyl/learn-devops/issues
+
+
+### Testing, Continuous Integration & Delivery
+
+Deployment is what you do with your app once you have
+built, tested and documented it.
+
+If you are unfamiliar with Test-Driven Development (TDD),
+please see: https://github.com/dwyl/learn-tdd <br />
+
+Next you should be proficient with Continuous Integration.
+For that we recommend using Travis-CI, see:
 [https://github.com/dwyl/**learn-travis**](https://github.com/dwyl/learn-travis)
 
 
-### Create an RSA Key for Deployment
-
-On the server, create an SSH key (_wihtout a password_):
-
-```
-ssh-keygen -t rsa -b 4096 -C "travis-ci-deployment-key"
-```
-
-![ssh-keygen](https://user-images.githubusercontent.com/194400/28845900-6ddce118-7701-11e7-8e2b-682dbfa01d4e.png)
 
 
-see:  https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/
+https://github.com/dwyl/learn-travis/blob/master/encrypted-ssh-keys-deployment.md
 
-### Add the `public` key to the `authorized_keys` file
-
-On the VM run the following command to add the `public` key to `authorized_keys`:
-```
- cat id_rsa.pub  >> ~/.ssh/authorized_keys
-```
-
-
-### Download the Private Key File
-
-On your `localhost`, download the `private` key you created in the previous step.
-
-```
-scp root@51.140.86.5:/root/.ssh/id_rsa ./deploy_key
-echo "deploy_key" >> .gitignore
-```
-
-![download-ssh-key](https://user-images.githubusercontent.com/194400/28846821-c8570300-7704-11e7-993c-478010457fbd.png)
-
-_Ensure_ you don't accidentally commit the _private_ key
-to GitHub by your `.gitignore` file.
-
-### Encrypt the Private Key
-
-Again, on your localhost, encrypt the `private` key using Travis' CLI:
-
-```
-gem install travis
-touch .travis.yml && travis encrypt-file ~/.ssh/deploy_key --add
-```
-
-You should have a `deploy_key.enc` file in your working directory.
-This should be added/commited to GitHub so that Travis can use it.
-
-
+<!--
 ### _First_ Upgrade Deployment
 
 Build Upgrade based on the version currently on Staging:
@@ -130,11 +105,11 @@ via Continuous Integration:_ https://github.com/dwyl/learn-devops/issues/19 <br 
 > _We requested help on:_ https://github.com/edeliver/edeliver/issues/234 <br />
 > _But sadly, no reply, yet ..._
 _if you have time to help please comment on the issue!_
-
+-->
 
 ## Resources
 
-### Videos
+### Videos
 
 + What is DevOps: https://youtu.be/I7vHqXY22gg
 + What is DevOps? - In Simple English: https://youtu.be/_I94-tJlovg
@@ -147,7 +122,7 @@ _if you have time to help please comment on the issue!_
 + https://theagileadmin.com/what-is-devops
 + https://newrelic.com/devops/what-is-devops
 
-### Linod-specific How-tos
+### Linode-specific How-tos
 
 + SSH with Public Keys:
 https://www.linode.com/docs/security/use-public-key-authentication-with-ssh

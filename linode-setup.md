@@ -113,7 +113,6 @@ the contents of the _sample_:
 
 #### Step 5: Launch a Linode VM using Vagrant
 
-
 ```
 vagrant up --debug &> vagrant.log
 ```
@@ -186,6 +185,8 @@ And when you refresh the browser page you should see the Phoenix App!
 
 
 So now we have a working server running a Phoenix App on Linode!
+
+
 
 
 <!--
