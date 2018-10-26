@@ -66,7 +66,8 @@ infrastructure/platform providers:
 
 + Node.js with Dokku:
 [nodejs-digital-ocean-centos-dokku.md](https://github.com/dwyl/learn-devops/blob/master/nodejs-digital-ocean-centos-dokku.md)
-+ Node.js with PM2 "Zero Downtime"
++ Node.js "Zero Downtime" Production Deployment with PM2:
+[nodejs-pm2-zero-downtime.md](https://github.com/dwyl/learn-devops/blob/master/nodejs-pm2-zero-downtime.md)
 
 
 > If you would like to see a guide for a _different_ service provider,
