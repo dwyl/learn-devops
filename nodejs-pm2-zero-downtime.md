@@ -155,9 +155,22 @@ sudo yum install git -y
 
 ### 6. Add Deployment SSH/RSA Public key
 
+In order to use PM2 as our deployment tool
+we need to add the deployment key to:
+1. The "target" server.
+In this case we will upload _both_ the **`public`** key to the server
+so that TravisCI can access the server via SSH
+***and*** the **`private`** key so that the VPS
+can access GitHub to **`git pull`** the latest version of the code.
+2. GitHub as a "deploy key".
+The **`public`** needs to be added as a "deploy key" for the repo
+so that GitHub will accept a **`git pull`** request from the server.
 
 
-### 6.1 Add the Deployment SSH Public Key to `authorized_keys`
+> If you don't already have a deployment key, see:
+[encrypted-ssh-keys-deployment.md](https://github.com/dwyl/learn-travis/blob/master/encrypted-ssh-keys-deployment.md)
+
+#### 6.1 Add the Deployment SSH Key the Server
 
 Add the deployment SSH **`public`** key
 to the list of `authorized_keys` on the VPS:
@@ -166,9 +179,14 @@ to the list of `authorized_keys` on the VPS:
 vi /root/.ssh/authorized_keys
 ```
 
-chmod 400 ~/.ssh/deploy_key
+Add the **`private`** key to the server at `~/.ssh/deploy_key`:
 
-#### 6.2 Add the Public Key to the Deploy Keys for the Repo
+then set the permissions on the key:
+```sh
+chmod 400 ~/.ssh/deploy_key
+```
+
+#### 6.2 Add the Public Key to the Deploy Keys for the Repo on GitHub
 
 Follow the instructions in:
 https://developer.github.com/v3/guides/managing-deploy-keys/#deploy-keys
