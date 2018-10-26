@@ -168,7 +168,14 @@ vi /root/.ssh/authorized_keys
 
 chmod 400 ~/.ssh/deploy_key
 
-#### 6.2
+#### 6.2 Add the Public Key to the Deploy Keys for the Repo
+
+Follow the instructions in:
+https://developer.github.com/v3/guides/managing-deploy-keys/#deploy-keys
+and add the `deploy_key` to your project's "Deploy Keys" on GitHub.
+e.g: https://github.com/nelsonic/hello-world-node-http-server/settings/keys
+
+You should see:
 
 ![image](https://user-images.githubusercontent.com/194400/47536290-24a1d300-d8b7-11e8-98b7-ab547a4c90b6.png)
 
@@ -176,10 +183,10 @@ chmod 400 ~/.ssh/deploy_key
 
 Ensure that your App's project/repo has a `ecosystem.config.js` file.
 
-+ Example:
-
-+ Docs:
++ Example: [**`ecosystem.config.js`**](https://github.com/nelsonic/hello-world-node-http-server/blob/5107062aad2b697b968180ec6de202d7e57e4a1a/ecosystem.config.js)
++ Config file Docs:
 https://pm2.io/doc/en/runtime/guide/ecosystem-file
++ Deployment Docs: http://pm2.keymetrics.io/docs/usage/deployment/
 
 Deploy the app using PM2 from your _localhost_:
 
@@ -190,15 +197,13 @@ pm2 deploy production exec "pm2 reload all"
 
 ![pm2-deploy-success](https://user-images.githubusercontent.com/194400/47532953-b73b7580-d8a9-11e8-894b-d439c7c82a88.png)
 
-PM2 will deploy the app on the default port (3000).
+PM2 will deploy the app on the default port (3000). <br />
 You can view the app by visiting: http://206.189.26.154:3000/
 
 ![app-deployed](https://user-images.githubusercontent.com/194400/47533038-17cab280-d8aa-11e8-9a2b-e8d493f02a28.png)
 
-This is our first sign of "success"
-but not a something we are going to send to end-users.
-
-+ Deployment Docs: http://pm2.keymetrics.io/docs/usage/deployment/
+_Checkpoint_! This is our first sign of "success"
+but not a something we are going to send/show to end-users.
 
 ### 8. Install NGINX
 
@@ -224,12 +229,14 @@ This is our _second_ "checkpoint".
 
 ### 9. Add a `proxy_pass` directive to `nginx.conf`
 
+In order to use NGINX as a proxy for our Node.js App,
+we need to setup a "proxy pass".
+
 Edit the default `nginx.conf` file:
 
 ```sh
 vi /etc/nginx/nginx.conf
 ```
-
 
 In the `nginx.conf` file,
 locate the section that starts with `location / {` ... e.g:
@@ -279,26 +286,66 @@ Now when you visit http://206.189.26.154 you should see:
 
 ![app-running](https://user-images.githubusercontent.com/194400/47533931-7e050480-d8ad-11e8-9fb8-633d4531d316.png)
 
+Now we are getting closer to something we can show an end-user;
+no TCP port in the URL.
+
 
 ### 10. Update the App on Localhost
 
+Make an update to your app on your `localhost`
+e.g: change "Hello World!" to "Hello PM2!"
 
-
-See:
+E.g:
 https://github.com/nelsonic/hello-world-node-http-server/commit/5107062aad2b697b968180ec6de202d7e57e4a1a
 
 
 ### 11. Re-Deploy
 
-```
-pm2 deploy production update
-pm2 start ecosystem.config.js --env production
+Re-deploy the app from `localhost` using the commands:
 ```
 pm2 deploy ecosystem.config.js production update
 pm2 deploy ecosystem.config.js production exec "pm2 reload all"
+```
 
+Now when you visit http://206.189.26.154 you should see:
 
 ![app-updated](https://user-images.githubusercontent.com/194400/47537037-7a787a00-d8bb-11e8-827d-011b29eee970.png)
+
+
+
+### 12. Deploy From Continuous Integration
+
+Luckily deploying the App from Travis-CI is quite straightforward:
+
+```yml
+language: node_js
+node_js:
+- node
+
+before_install: # setup the RSA key for use in Dokku Deployment:
+- openssl aes-256-cbc -K $encrypted_77965d5bdd4d_key -iv $encrypted_77965d5bdd4d_iv
+  -in deploy_key.enc -out ./deploy_key -d
+- eval "$(ssh-agent -s)"
+- chmod 600 ./deploy_key
+- echo -e "Host $SERVER_IP_ADDRESS\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+- ssh-add ./deploy_key
+
+after_success:
+  - npm install pm2 -g
+  - pm2 deploy ecosystem.config.js production update
+  - pm2 deploy ecosystem.config.js production exec "pm2 reload all"
+```
+
+Example:
+[**`.travis.yml`**](https://github.com/nelsonic/hello-world-node-http-server/blob/2696dae2fcc05ca43149c06e85922aea4d10b2f1/.travis.yml)
+
+Sample output:
+https://travis-ci.org/nelsonic/hello-world-node-http-server/builds/446453771#L613
+
+![travis-ci-example](https://user-images.githubusercontent.com/194400/47538462-66387b00-d8c3-11e8-93d6-e0d22c8d0d6b.png)
+
+
+
 
 ## Recommended Further/Background Reading
 
