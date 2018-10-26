@@ -207,7 +207,9 @@ but not a something we are going to send/show to end-users.
 
 ### 8. Install NGINX
 
-Install NGINX so that we can run it as a Proxy for our Node.js App:
+Install NGINX so that we can run it as a Proxy for our Node.js App.
+This will allow us to both HTTPS and multiple Apps on the same server
+listening on TCP port 80/443.
 
 ```sh
 sudo yum install epel-release -y && sudo yum install nginx -y
@@ -345,6 +347,60 @@ https://travis-ci.org/nelsonic/hello-world-node-http-server/builds/446453771#L61
 ![travis-ci-example](https://user-images.githubusercontent.com/194400/47538462-66387b00-d8c3-11e8-93d6-e0d22c8d0d6b.png)
 
 
+### 13. App on Subdomain
+
+
+Login to your Domain Name Service and create a subdomain for your app:
+
+![pm2.dwyl.io](https://user-images.githubusercontent.com/194400/47554242-cb5e9180-d900-11e8-9ccc-60dec14901d8.png)
+
+Once you have added that, go refill your water glass/bottle while you wait
+for the DNS to propagate.
+
+
+
+Create the **`pm2_dwyl_io.conf`** file:
+```sh
+vi /etc/nginx/conf.d/pm2_dwyl_io.conf
+```
+
+And _paste_ the following:
+```nginx
+
+server {
+    server_name pm2.dwyl.io;
+    listen       80;
+    root         /usr/share/nginx/html;
+
+    location / {
+      proxy_pass http://localhost:3000;
+    }
+
+    error_page 404 /404.html;
+        location = /40x.html {
+    }
+
+    error_page 500 502 503 504 /50x.html;
+        location = /50x.html {
+    }
+}  
+```
+
+
+Restart nginx:
+```sh
+nginx -t
+# if the config test works run:
+pkill nginx
+nginx
+```
+
+Now when you visit your subdomain in your browser,
+e.g: http://pm2.dwyl.io <br />
+you should see your app being served on the subdomain:
+![image](https://user-images.githubusercontent.com/194400/47558630-7f651a00-d90b-11e8-8fe7-1302ad02c4ca.png)
+
+
 
 
 ## Recommended Further/Background Reading
@@ -356,7 +412,9 @@ https://medium.com/tech-tajawal/process-manager-pm2-performance-optimization-par
 + Install NGINX:
 https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-centos-7
 + NGINX upstream proxy: http://nginx.org/en/docs/http/ngx_http_upstream_module.html
-+ Install Git:
++ How to Configure NGINX (_much better than the "official" docs!_):
+https://www.linode.com/docs/web-servers/nginx/how-to-configure-nginx/
++ Install Git on Centos (_fairly obvs_):
 https://www.digitalocean.com/community/tutorials/how-to-install-git-on-centos-7
 + PM2 show process:
 https://futurestud.io/tutorials/pm2-list-processes-and-show-process-details
