@@ -30,7 +30,7 @@ Once you've _launched_ the instance, you should see the Linode Manager:
 Select an Operating System (_we tend to use the most recent Ubuntu "LTS" version_): <br />
 ![image](https://user-images.githubusercontent.com/194400/28494609-3fb1b21a-6f2b-11e7-9448-7a11ebcd6c3b.png)
 
-#### Step 3: Boot the New Instance
+#### Step 3: Boot the New Instance
 
 Remember to click on `[Boot]` button to actually _run_ the instance:
 ![image](https://user-images.githubusercontent.com/194400/28494633-079559c6-6f2c-11e7-94d4-3e5e94d00b8a.png)

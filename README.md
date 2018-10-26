@@ -62,6 +62,13 @@ infrastructure/platform providers:
 + Linode: [linode-setup.md](https://github.com/dwyl/learn-devops/blob/master/linode-setup.md)
 + DigitalOcean: [nodejs-digital-ocean-centos-dokku.md](https://github.com/dwyl/learn-devops/blob/master/nodejs-digital-ocean-centos-dokku.md)
 
+### Node.js
+
++ Node.js with Dokku:
+[nodejs-digital-ocean-centos-dokku.md](https://github.com/dwyl/learn-devops/blob/master/nodejs-digital-ocean-centos-dokku.md)
++ Node.js "Zero Downtime" Production Deployment with PM2:
+[nodejs-pm2-zero-downtime.md](https://github.com/dwyl/learn-devops/blob/master/nodejs-pm2-zero-downtime.md)
+
 
 > If you would like to see a guide for a _different_ service provider,
 please open an issue with your suggestion(s):
