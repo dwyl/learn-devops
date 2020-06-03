@@ -12,7 +12,7 @@ is it is quick to setup and have your application running
 for your users.
 However in the longer term using a PaaS can become costly (per unit of compute e.g. RAM/CPU).
 Virtual Private Server are in contrast normally cheaper to run
-but require more setup time and devops knowledge.
+but require more setup time and DevOps knowledge to maintain.
 
 ### PaaS
 
