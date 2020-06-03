@@ -1,6 +1,6 @@
 # Deploy an Elixir or Phoenix application
 
-This markdown summarise the research done
+This markdown summarises the research done
 on how to deploy a Phoenix application.
 
 
@@ -152,6 +152,5 @@ Real Time Phoenix, the solutions to deploy witout downtime are based on running
 applications on Elixir clusters. I'd like to learn more about this aspect
 but from a MVP perspective this point might take too much time to assimilate
 and I think a PaaS might be best to use at the moment.
-
 
 
