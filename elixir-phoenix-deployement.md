@@ -33,7 +33,15 @@ The pricing above doesn't include the database which needs to be added to the to
 ### Gigalixir
 
 Similar to Heroku [Gigalixir](https://www.gigalixir.com/) provides
-a platform which focus on deploying Elixir/Phoenix application.
+a platform which focuses _exclusively_ on deploying Elixir/Phoenix application.
+Having an exclusive focus on deploying Elixir Apps gives Gigalixir several key advantages:
+1. Zero-downtime blue-green continuous deployment.
+see: https://martinfowler.com/bliki/BlueGreenDeployment.html
+2. No limit to concurrent connections.
+3. All clustering handled transparently. 
+(so if you need to scale your app beyond 10k concurrent users, 
+you don't have to pay exponentially more for bigger "dynos" 
+the way you are forced to scale vertically on Heroku)
 
 Deploying: https://elixircasts.io/deploying-with-gigalixir-%28revised%29
 
