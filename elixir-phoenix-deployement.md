@@ -7,7 +7,7 @@ on how to deploy a Phoenix application.
 ## PaaS vs VPS
 
 In the past we have mostly used Platform as a Service
-to deploy Elixir application. The main advantage of PaaS
+to deploy Elixir applications. The main advantage of PaaS
 is it is quick to setup and have your application running
 for your users.
 However on a long term using a PaaS can become costly.
@@ -152,5 +152,4 @@ Real Time Phoenix, the solutions to deploy witout downtime are based on running
 applications on Elixir clusters. I'd like to learn more about this aspect
 but from a MVP perspective this point might take too much time to assimilate
 and I think a PaaS might be best to use at the moment.
-
 
