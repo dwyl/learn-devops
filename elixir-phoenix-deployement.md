@@ -10,7 +10,7 @@ In the past we have mostly used Platform as a Service
 to deploy Elixir applications. The main advantage of PaaS
 is it is quick to setup and have your application running
 for your users.
-However on a long term using a PaaS can become costly.
+However in the longer term using a PaaS can become costly (per unit of compute e.g. RAM/CPU).
 Virtual Private Server are in contrast normally cheaper to run
 but require more setup time and devops knowledge.
 
@@ -152,4 +152,3 @@ Real Time Phoenix, the solutions to deploy witout downtime are based on running
 applications on Elixir clusters. I'd like to learn more about this aspect
 but from a MVP perspective this point might take too much time to assimilate
 and I think a PaaS might be best to use at the moment.
-
