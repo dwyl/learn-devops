@@ -82,7 +82,7 @@ the costs linked to it.
 #### Ubuntu
 
 Linode provides and support Ubuntu:
-![image](https://user-images.githubusercontent.com/6057298/83647811-3bd59600-a5ad-11ea-893c-b99e3df7f605.png)
+![linode-distribution-options-screen](https://user-images.githubusercontent.com/6057298/83647811-3bd59600-a5ad-11ea-893c-b99e3df7f605.png)
 
 
 From there the idea is install Erlang and Elixir on the server
