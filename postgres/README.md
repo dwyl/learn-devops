@@ -103,7 +103,7 @@ createuser --interactive
 ```
 hitsnodelete
 ```
-This username is fairly selfevident.
+This username is fairly self-evident.
 We want a user that can `insert` records but not `delete` any data.
 
 ```
