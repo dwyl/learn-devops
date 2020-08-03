@@ -89,7 +89,7 @@ sudo -i -u postgres
 ```
 
 You should see the following in your terminal 
-to indicate that you're logged in as the posgres user:
+to indicate that you're logged in as the postgres user:
 
 ```
 postgres@hits:~$
