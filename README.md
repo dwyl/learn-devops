@@ -128,6 +128,7 @@ _if you have time to help please comment on the issue!_
 + https://en.wikipedia.org/wiki/DevOps
 + https://theagileadmin.com/what-is-devops
 + https://newrelic.com/devops/what-is-devops
++ https://logit.io/blog/post/what-is-devops
 
 ### Linode-specific How-tos
 
