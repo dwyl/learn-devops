@@ -244,3 +244,29 @@ You should see:
 ```
 
 Success.
+
+
+https://serverfault.com/questions/110154/whats-the-default-superuser-username-password-for-postgres-after-a-new-install
+
+
+```
+sudo -u postgres psql postgres -d hits_dev
+```
+
+```
+\d
+                 List of relations
+ Schema |        Name         |   Type   |  Owner
+--------+---------------------+----------+----------
+ public | hits                | table    | postgres
+ public | hits_id_seq         | sequence | postgres
+ public | repositories        | table    | postgres
+ public | repositories_id_seq | sequence | postgres
+ public | schema_migrations   | table    | postgres
+ public | useragents          | table    | postgres
+ public | useragents_id_seq   | sequence | postgres
+ public | users               | table    | postgres
+ public | users_id_seq        | sequence | postgres
+(9 rows)
+
+```
