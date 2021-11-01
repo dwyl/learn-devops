@@ -45,8 +45,8 @@ e.g: https://www.sciencemuseum.org.uk <br />
 We have _several_ clients who use (_and **love**_) Heroku e.g:
 https://www.ellenmacarthurfoundation.org <br />
 For the National Health Service (NHS) in England,
-(_who have a major contract with Microsoft_) we deployed
-https://www.slam.nhs.uk to Azure. <br />
+(_who have a major contract with Microsoft_) 
+we deployed to Microsoft Azure. <br />
 We have clients who still own their own "_Bare Metal_" Servers.
 
 ### Provider-Specific Guides
