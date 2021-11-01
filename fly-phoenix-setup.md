@@ -47,3 +47,20 @@ But they still have the job of making it all seamless.
 
 # How?
 
+Following the "_Hands on with Fly_" (getting started guide):
+https://fly.io/docs/hands-on/start/
+
+## Instal `flyctl` CLI
+
+https://fly.io/docs/hands-on/installing/
+
+I'm using homebrew on mac so:
+
+```sh
+brew install superfly/tap/flyctl
+```
+
+
+Followed: https://fly.io/docs/getting-started/elixir/ <br />
+Created the PR: https://github.com/dwyl/hits/pull/128 <br />
+
