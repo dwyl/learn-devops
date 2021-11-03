@@ -1,7 +1,7 @@
 # Learn DevOps
 
 Learn the craft of "DevOps" (Developer Operations)
-to _easily/reliably_ deploy your App and keep it Up!
+to _reliably_ deploy your App and keep it Up!
 
 ![devops-process](https://user-images.githubusercontent.com/194400/28494977-ce74a632-6f36-11e7-9f86-f48abde49479.png)
 
@@ -9,16 +9,16 @@ to _easily/reliably_ deploy your App and keep it Up!
 
 You should learn more "advanced" DevOps if:
 
-+ You / your team have "out-grown"
-[Heroku](https://github.com/dwyl/learn-heroku)
-(_e.g: your Heroku bill is more than $100/month_)
-+ You want "more control" over your infrastructure
-e.g: to run a specific version of software or database.
-+ Your client/boss has instructed you
-to use a _specific_ "cloud" provider.
-+ Curiosity to extend your
-"back end infrastructure" knowledge to be a more
-"well-rounded" developer.
+- You / your team have "out-grown"
+  [Heroku](https://github.com/dwyl/learn-heroku)
+  (_e.g: your Heroku bill is more than \$100/month_)
+- You want "more control" over your infrastructure
+  e.g: to run a specific version of software or database.
+- Your client/boss has instructed you
+  to use a _specific_ "cloud" provider.
+- Curiosity to extend your
+  "back end infrastructure" knowledge to be a more
+  "well-rounded" developer.
 
 ## What?
 
@@ -31,9 +31,8 @@ to use a _specific_ "cloud" provider.
 ## Who?
 
 Everyone that wants to _seriously consider/call_ themself
-a "***Full Stack***" **Developer** ***must*** know how to deploy,
+a "**_Full Stack_**" **Developer** **_must_** know how to deploy,
 _secure_ and _monitor_ their app on their chosen infrastructure.
-
 
 ## How?
 
@@ -42,12 +41,12 @@ both our own and those of our clients,
 on a wide variety of infrastructure and platform providers.
 
 _Most_ of our Apps have been deployed to **Amazon Web Services** ("**AWS**")
-e.g: https://www.sciencemuseum.org.uk  <br />
+e.g: https://www.sciencemuseum.org.uk <br />
 We have _several_ clients who use (_and **love**_) Heroku e.g:
 https://www.ellenmacarthurfoundation.org <br />
 For the National Health Service (NHS) in England,
-(_who have a major contract with Microsoft_) we deployed
-https://www.healthlocker.uk to Azure. <br />
+(_who have a major contract with Microsoft_) 
+we deployed to Microsoft Azure. <br />
 We have clients who still own their own "_Bare Metal_" Servers.
 
 ### Provider-Specific Guides
@@ -55,25 +54,24 @@ We have clients who still own their own "_Bare Metal_" Servers.
 We have produced a guide for each of our most-used
 infrastructure/platform providers:
 
-+ AWS: https://github.com/dwyl/learn-amazon-web-services
-+ AWS Lambda: https://github.com/dwyl/learn-aws-lambda
-+ Azure: https://github.com/dwyl/learn-microsoft-azure
-+ Heroku: https://github.com/dwyl/learn-heroku
-+ Linode: [linode-setup.md](https://github.com/dwyl/learn-devops/blob/master/linode-setup.md)
-+ DigitalOcean: [nodejs-digital-ocean-centos-dokku.md](https://github.com/dwyl/learn-devops/blob/master/nodejs-digital-ocean-centos-dokku.md)
+- AWS: https://github.com/dwyl/learn-amazon-web-services
+- AWS Lambda: https://github.com/dwyl/learn-aws-lambda
+- Azure: https://github.com/dwyl/learn-microsoft-azure
+- Heroku: https://github.com/dwyl/learn-heroku
+- Fly.io: [fly-phoenix-setup.md](https://github.com/dwyl/learn-devops/blob/master/fly-phoenix-setup.md)
+- Linode: [linode-setup.md](https://github.com/dwyl/learn-devops/blob/master/linode-setup.md)
+- DigitalOcean: [nodejs-digital-ocean-centos-dokku.md](https://github.com/dwyl/learn-devops/blob/master/nodejs-digital-ocean-centos-dokku.md)
 
 ### Node.js
 
-+ Node.js with Dokku:
-[nodejs-digital-ocean-centos-dokku.md](https://github.com/dwyl/learn-devops/blob/master/nodejs-digital-ocean-centos-dokku.md)
-+ Node.js "Zero Downtime" Production Deployment with PM2:
-[nodejs-pm2-zero-downtime.md](https://github.com/dwyl/learn-devops/blob/master/nodejs-pm2-zero-downtime.md)
-
+- Node.js with Dokku:
+  [nodejs-digital-ocean-centos-dokku.md](https://github.com/dwyl/learn-devops/blob/master/nodejs-digital-ocean-centos-dokku.md)
+- Node.js "Zero Downtime" Production Deployment with PM2:
+  [nodejs-pm2-zero-downtime.md](https://github.com/dwyl/learn-devops/blob/master/nodejs-pm2-zero-downtime.md)
 
 > If you would like to see a guide for a _different_ service provider,
-please open an issue with your suggestion(s):
-https://github.com/dwyl/learn-devops/issues
-
+> please open an issue with your suggestion(s):
+> https://github.com/dwyl/learn-devops/issues
 
 ### Testing, Continuous Integration & Delivery
 
@@ -86,9 +84,6 @@ please see: https://github.com/dwyl/learn-tdd <br />
 Next you should be proficient with Continuous Integration.
 For that we recommend using Travis-CI, see:
 [https://github.com/dwyl/**learn-travis**](https://github.com/dwyl/learn-travis)
-
-
-
 
 https://github.com/dwyl/learn-travis/blob/master/encrypted-ssh-keys-deployment.md
 
@@ -118,10 +113,10 @@ _if you have time to help please comment on the issue!_
 
 ### Videos
 
-+ What is DevOps: https://youtu.be/I7vHqXY22gg
-+ What is DevOps? - In Simple English: https://youtu.be/_I94-tJlovg
-(_good info but last minute is a RackSpace pitch_)
-+ DevOps for Beginners Course Introduction: https://youtu.be/v7ZcZfGBFcU
+- What is DevOps: https://youtu.be/I7vHqXY22gg
+- What is DevOps? - In Simple English: https://youtu.be/_I94-tJlovg
+  (_good info but last minute is a RackSpace pitch_)
+- DevOps for Beginners Course Introduction: https://youtu.be/v7ZcZfGBFcU
 
 ### Background Reading
 
@@ -132,20 +127,20 @@ _if you have time to help please comment on the issue!_
 
 ### Linode-specific How-tos
 
-+ SSH with Public Keys:
-https://www.linode.com/docs/security/use-public-key-authentication-with-ssh
-+ Using Vagrant for Environment Management:
-https://www.linode.com/docs/applications/configuration-management/vagrant-linode-environments
+- SSH with Public Keys:
+  https://www.linode.com/docs/security/use-public-key-authentication-with-ssh
+- Using Vagrant for Environment Management:
+  https://www.linode.com/docs/applications/configuration-management/vagrant-linode-environments
 
 ### Using a Different Cloud Infrastructure Provider?
 
 While this tutorial has focussed on using Linode,
 we @dwyl have _experience_ of using _several_ infrastructure providers:
 
-+ Amazon Web Services: https://github.com/dwyl/learn-amazon-web-services
-+ Azure: https://github.com/dwyl/learn-microsoft-azure
-+ Digital Ocean: https://github.com/dwyl/DigitalOcean-Setup
-+ Heroku: https://github.com/dwyl/learn-heroku
+- Amazon Web Services: https://github.com/dwyl/learn-amazon-web-services
+- Azure: https://github.com/dwyl/learn-microsoft-azure
+- Digital Ocean: https://github.com/dwyl/DigitalOcean-Setup
+- Heroku: https://github.com/dwyl/learn-heroku
 
 if you have a question specific to using Linode or one of the _other_
 "cloud" providers, please
