@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>Learn, Deploy and Maintain a <code>Gogs</code> Server</h1>
+    <h1>Learn to Deploy & Maintain a <code>Gogs</code> Server</h1>
     <a href="https://gogs.io/">
         <img src="https://user-images.githubusercontent.com/194400/162528448-5df0e9e8-a132-4644-b216-5107e0df0204.png">
     </a>
@@ -9,7 +9,7 @@
         for <em><strong>complete beginners</strong></em>.
     </p>
 
-[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/learn-travis/issues)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/dwyl/learn-travis/issues)
 [![HitCount](http://hits.dwyl.com/dwyl/learn-devops-gogs.svg)](http://hits.dwyl.com/dwyl/learn-devops-gogs)
 
 </div>
@@ -38,11 +38,14 @@ We are exploring having a **`Gogs`** server running as a
 
 # _Who_? 🤓
 
-The audience for this guide is "_us_". <br />
+The audience for this guide is "_us_" 
+[**`@dwyl`**](https://github.com/dwyl). <br />
 If anyone `else` finds it helpful that's a bonus. <br />
-Please ⭐ the repo if you find it useful. 
+Please ⭐ the repo if you find it useful. Thanks!
 
 # _How_? 👩‍💻
+
+Continue: 
 
 
 
