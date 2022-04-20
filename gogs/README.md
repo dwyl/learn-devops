@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>Learn to Deploy & Maintain a <code>Gogs</code> Server</h1>
+    <h1>Deploy & Maintain a <code>Gogs</code> Server</h1>
     <a href="https://gogs.io/">
         <img src="https://user-images.githubusercontent.com/194400/162528448-5df0e9e8-a132-4644-b216-5107e0df0204.png">
     </a>
@@ -34,7 +34,9 @@ we are _mostly_ happy with the GitHub service. 👌<br />
 Except for a few annoying aspects of the interface
 and the occasional outage, GitHub is good.
 We are exploring having a **`Gogs`** server running as a 
-[**_hot_ backup**](https://en.wikipedia.org/wiki/Backup_site#Hot_site). 
+[**_hot_ backup**](https://en.wikipedia.org/wiki/Backup_site#Hot_site)
+which we can use when GitHub is unavailable
+or if they ever lose our data! 
 
 # _Who_? 🤓
 
@@ -45,11 +47,64 @@ Please ⭐ the repo if you find it useful. Thanks!
 
 # _How_? 👩‍💻
 
-Continue: 
+There are several options for running `Gogs`:
+1. **Directly** on your main machine/workstation -
+    can be advantageous in terms of setup speed,
+    but clutters your main machine with a server
+    that requires resources + maintenance.
+
+2. On your machine using **Docker** - provides
+   good isolation/separation, 
+   reasonably fast startup times
+   and can be easily "killed" when no longer needed.
+
+3. On a **_secondary_ computer** e.g. **RaspberryPi** - complete isolation,
+   more "hackable" and simulates production more closely.
+   Obviously having a second machine is a luxury 
+   not everyone has. But we figure a 
+   [$15](https://www.raspberrypi.com/products/raspberry-pi-zero-2-w/)
+   RasbperryPi Zero is not a stretch for most people doing DevOps.
+
+4. On **3rd Party/Cloud Service** e.g. AWS or **Fly.io** -
+   perfect once you have decided `Gogs` is for you 
+   and you want a Production instance for your project.
+   We use Fly.io because it's: <br />
+   a) Simplicity: deploying to Fly.io is 
+   _much_ simpler than other VPS/Cloud services (AWS!). <br />
+   b) _Cheaper_ than an equivalent ($2/month) <br />
+   c) Our _main_ app already runs on Fly.io 
+   so having the `Gogs/Git` server co-located 
+   is good for latency/speed/performance.
+
+We chose to install `Gogs` on a **RaspberryPi**
+for 3 reasons: <br />
+a) Keeps it fully isolated on a separate machine. 
+Which simulates "production". <br />
+b) Allows us to test connecting to it over a network. i.e. real world tests.<br />
+c) Means we can run the instance long-term 
+and store actual (backup) data on it.<br />
+
+There are quite a few steps for setting this up,
+so we documented them in a separate doc.
+See: [`/install-gogs-raspberrypi.md`]()
 
 
 
 
+### Fly.io
+
+Once we had everything working 
+on the **RaspberryPi**,
+we deployed a "Production" instance to Fly.io.
+
+See: 
+
+
+
+
+
+
+<br />
 
 ## Reading 📚
 
@@ -57,4 +112,4 @@ Continue:
 Pages we read on the journey:
 
 + https://pimylifeup.com/raspberry-pi-gogs/
-
++ https://www.techrepublic.com/article/how-to-connect-to-your-local-gogs-repository-from-the-git-command-line/

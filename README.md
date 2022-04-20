@@ -62,6 +62,16 @@ infrastructure/platform providers:
 - Linode: [linode-setup.md](https://github.com/dwyl/learn-devops/blob/master/linode-setup.md)
 - DigitalOcean: [nodejs-digital-ocean-centos-dokku.md](https://github.com/dwyl/learn-devops/blob/master/nodejs-digital-ocean-centos-dokku.md)
 
+
+### `Gogs` Git Server
+
+We needed to run a our own `Git` server 
+for one of our projects.
+So we deployed `Gogs` 
+both `locally` and to Fly.io
+and documented it:
+[`/gogs`]()
+
 ### Node.js
 
 - Node.js with Dokku:

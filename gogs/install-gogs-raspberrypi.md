@@ -1,4 +1,4 @@
-# Install Gogs on Raspberry Pi
+# Install `Gogs` on RaspberryPi
 
 This guide follows and expands 
 on the official **`Gogs`** 
@@ -9,16 +9,21 @@ Our objective is to capture _all_ the steps
 required so that _anyone_ can follow along
 and replicate our _exact_ result.
 
+> _If you get stuck along the way, 
+> please don't suffer in silence!
+> Ask for help_; 
+> [**open an issue**!](https://github.com/dwyl/learn-devops/issues)
 
 ## Prerequisites
 
-Ensure you have a working Raspberry Pi running 
+Ensure you have a working RaspberryPi running 
 Ubuntu:
 https://ubuntu.com/tutorials/how-to-install-ubuntu-on-your-raspberry-pi#1-overview
 
 
 > We are using Ubuntu because it's _ubiquitous_
-> and will help with deployment to Cloud/VPS later
+> and will help with both Continuous Integration 
+> and deployment to Cloud/VPS later
 > so getting it working on the Pi is a good first step. ✅
 
 
@@ -112,7 +117,7 @@ sudo adduser --disabled-login --gecos 'Gogs' git
 
 <br />
 
-### `Go`s
+### `Go lang` 
 
 We are going to compile `gogs` from source
 so we need the `Golang` compiler:
@@ -156,7 +161,7 @@ echo 'export PATH=$PATH:$GOROOT/bin:$GOPATH/bin' >> $HOME/.bashrc
 source $HOME/.bashrc
 ```
 
-Note
+**Note**:
 We need to specify the `GOROOT` environment variable 
 since we are installing Go to a custom location.
 Check that Go is properly installed:
