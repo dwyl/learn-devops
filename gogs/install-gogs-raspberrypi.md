@@ -420,3 +420,5 @@ Apr 10 21:58:44 ubuntu gogs[127605]: 2022/04/10 21:58:44 [TRACE] Log mode: File 
 https://www.linode.com/docs/guides/install-gogs-on-debian/ <br />
 Last updated Oct 2020, some things deprecated.
 But still good as a starting point. 
+
+[![HitCount](http://hits.dwyl.com/dwyl/learn-devops-gogs-rpi-setup.svg)](http://hits.dwyl.com/dwyl/learn-devops-gogs)

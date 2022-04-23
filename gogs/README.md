@@ -9,7 +9,7 @@
         for <em><strong>complete beginners</strong></em>.
     </p>
 
-[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/dwyl/learn-travis/issues)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/dwyl/learn-devops/issues)
 [![HitCount](http://hits.dwyl.com/dwyl/learn-devops-gogs.svg)](http://hits.dwyl.com/dwyl/learn-devops-gogs)
 
 </div>
@@ -88,14 +88,23 @@ There are quite a few steps for setting this up,
 so we documented them in a separate doc.
 See: [`/install-gogs-raspberrypi.md`]()
 
+Once we had setup the `Gogs` server on the `RPi`
+with `nginx` and `systemd` to auto-boot 
+whenever we restart the `RPi`,
+we tested connecting to `Gogs` on the `RPi`
+and documented the steps:
+[`/connect-to-raspberrypi.md`]()
 
-
+Once we confirmed that everything was working 
+on the local **`RaspberryPi`**,
+we felt confident to deploy to Fly.io 
 
 ### Fly.io
 
-Once we had everything working 
-on the **RaspberryPi**,
-we deployed a "Production" instance to Fly.io.
+Once we had everything working & tested
+on the **`RaspberryPi`**,
+we felt confident 
+so we deployed a "Production" instance to Fly.io.
 
 See: 
 

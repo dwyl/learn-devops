@@ -1,5 +1,6 @@
 <div align="center">
-  <h1>Connect to Local <code>Gogs</code> Server on RaspberryPi</h1>
+
+# _Connect_ to Local <code>Gogs</code> Server on RaspberryPi</h1>
 
 </div>
 

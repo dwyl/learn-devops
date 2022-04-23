@@ -180,3 +180,9 @@ As you can see, from the pricing, the _resources_ do offer value-for money
 once the project's database goes above a certain size.
 
 -->
+<br />
+Thanks for learning with us!
+Your feedback/questions is always welcome. 
+
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/dwyl/learn-devops/issues)
+[![HitCount](http://hits.dwyl.com/dwyl/learn-devops.svg)](http://hits.dwyl.com/dwyl/learn-devops)
