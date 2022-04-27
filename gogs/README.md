@@ -93,7 +93,7 @@ with `nginx` and `systemd` to auto-boot
 whenever we restart the `RPi`,
 we tested connecting to `Gogs` on the `RPi`
 and documented the steps:
-[`/connect-to-raspberrypi.md`]()
+[`/connect-to-raspberrypi.md`](./connect-to-raspberrypi.md)
 
 Once we confirmed that everything was working 
 on the local **`RaspberryPi`**,
