@@ -30,7 +30,7 @@ https://ubuntu.com/tutorials/how-to-install-ubuntu-on-your-raspberry-pi#1-overvi
 ### **`Postgres`**
 
 The default DB for **`Gogs`** 
-is be **`MySQL`**,
+is **`MySQL`**,
 but we prefer **`Postgres`**. 
 
 Install Postgres on Ubuntu:
