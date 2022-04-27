@@ -284,7 +284,7 @@ Create the self-signed certificate:
 openssl req -new -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -out MyCertificate.crt -keyout MyKey.key
 ```
 
-Accept all the defaults for the certificate creation
+Accept all the defaults for the certificate creation,
 this is just for use on your local network.
 
 2. Install Nginx
