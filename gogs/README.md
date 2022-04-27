@@ -86,7 +86,7 @@ and store actual (backup) data on it.<br />
 
 There are quite a few steps for setting this up,
 so we documented them in a separate doc.
-See: [`/install-gogs-raspberrypi.md`]()
+See: [`/install-gogs-raspberrypi.md`](./install-gogs-raspberrypi.md)
 
 Once we had setup the `Gogs` server on the `RPi`
 with `nginx` and `systemd` to auto-boot 
