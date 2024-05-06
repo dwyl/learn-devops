@@ -53,5 +53,24 @@ As soon as we _deploy_ something to the this cluster,
 we will scale it to 2 instances with more resources
 for failover.
 
-## 3. Connect to Cluster
+## 3. Secure the Cluster
 
+Secure the Database ...
+
+<img width="1459" alt="digital-ocean-managed-postgres-secure-db" src="https://github.com/user-attachments/assets/c9c59446-ce43-460d-8fab-6c3cb9f84bf5">
+
+Viewing this we realized that we needed to launch a Droplet (VPS) instance
+in order to secure the DB Cluster ...
+
+
+
+
+
+## 4. Connect to Cluster
+
+
+Continue: https://cloud.digitalocean.com/databases/38253546-fe28-4a33-9a44-cb175b6f698f?i=933568
+
+## 5. Done
+
+<img width="1468" alt="digital-ocean-managed-postgres-done" src="https://github.com/user-attachments/assets/6fea0396-dc21-4ecd-ab2b-9770583a66bd">
