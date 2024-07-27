@@ -63,9 +63,6 @@ Viewing this we realized that we needed to launch a Droplet (VPS) instance
 in order to secure the DB Cluster ...
 
 
-
-
-
 ## 4. Connect to Cluster
 
 
