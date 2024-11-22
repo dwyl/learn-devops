@@ -1,5 +1,12 @@
+<div align="center">
+
 # How to Backup Fly.io Postgres Database
 
+A comprehensive step-by-step guide
+to backing-up your Fly.io `Postgres` database
+on your `localhost`.
+
+</div>
 
 ## Why? 🤷‍♀️
 
@@ -9,7 +16,7 @@ from a Fly.io `Postgres` instance.
 ## How? 👩‍💻
 
 ### 0. Before You Start
-
+n
 Before you attempt to access the `Postgres` database on `Fly.io`,
 ensure you are authenticated with your `Fly.io` account;
 run the command:
@@ -27,7 +34,7 @@ fly auth login
 
 And follow the instructions.
 
-### 1. Forward the server port to your `localhost`
+### 1. Forward the server port to your `localhost`
 
 > **Note**: if you have `Postgres` running locally on `TCP` Port `5432`,
 > you may need to temporarily shut it down
@@ -44,7 +51,7 @@ In our case it was:
 fly proxy 5432 -a hits-db
 ```
 
-In our terminal we saw the following: 
+In our terminal we saw the following:
 
 ```sh
 Proxying local port 5432 to remote [hits-db.internal]:5432
@@ -110,7 +117,7 @@ Once the `pg_dump` command finishes, proceed to the next step.
 Kill the connection to the `Fly.io` instance 
 using keyboard shortcut: `Ctrl` + `C` (twice).
 
-### 4. Restore your local database
+### 4. Restore your local database
 
 To restore the database you just backed up to `Postgres`
 running on your `localhost`,
@@ -135,6 +142,7 @@ psql -U postgres -d hits_dev < backup.sql
 Using your choice of `Postgres` query interface
 (e.g: [`pgweb`](https://github.com/dwyl/learn-postgresql/issues/94))
 we can execute a query on the DB running on `localhost`:
+
 ```sql
 SELECT COUNT(*) FROM hits h
 JOIN repositories r ON h.repo_id = r.id
@@ -142,6 +150,7 @@ JOIN users u ON r.user_id = u.id
 WHERE r.name = 'start-here'
 AND u.name = 'dwyl'
 ```
+
 e.g: http://localhost:8081/#
 <img width="942" alt="image" src="https://github.com/user-attachments/assets/097f5aec-f5cf-44b0-a411-b7920f754818">
 
@@ -151,12 +160,12 @@ e.g: http://localhost:8081/#
 
 i.e. there have been 3 page views on https://github.com/dwyl/start-here since we did the SQL dump a few mins ago. 
 
-We can check the "live" count at: https://hits.dwyl.com/dwyl/start-here.svg e.g: ![hits-start-here-svg](https://hits.dwyl.com/dwyl/start-here.svg)
+We can check the "live" count at: https://hits.dwyl.com/dwyl/start-here.svg
+e.g: ![hits-start-here-svg](https://hits.dwyl.com/dwyl/start-here.svg)
 
 But this tells us that the DB dump and restore worked. 🎉
 So we can now proceed to restoring it on `DigitalOcean`!
 [dwyl/learn-devops#90](https://github.com/dwyl/learn-devops/issues/90)
-
 
 ## References 🔗
 
@@ -173,11 +182,10 @@ for: "Dump your Fly.io PostgreSQL DB locally"
 https://tello.io/blog/flyio-dump-your-postgresql-db-locally
 We used his _outline_ as a starting point.
 
-
 ## Context 👎
 
 At the time of writing,
-Fly.io still only has _unmanaged_ `Postgres`.
+Fly.io _still_ only has **_unmanaged_ `Postgres`**.
 And they recently migrated
 one of our (production) DB instances
 to a new machine within their data center
