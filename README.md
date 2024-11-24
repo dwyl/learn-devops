@@ -1,24 +1,28 @@
+<div align="center">
+
 # Learn DevOps
 
-Learn the craft of "DevOps" (Developer Operations)
+Learn the craft of DevOps (Developer Operations)
 to _reliably_ deploy your App and keep it Up!
 
 ![devops-process](https://user-images.githubusercontent.com/194400/28494977-ce74a632-6f36-11e7-9f86-f48abde49479.png)
+
+</div>
 
 ## Why?
 
 You should learn more "advanced" DevOps if:
 
-- You / your team have "out-grown"
-  [Heroku](https://github.com/dwyl/learn-heroku)
+- You / your team have _out-grown_
+  [**Heroku**](https://github.com/dwyl/learn-heroku)
   (_e.g: your Heroku bill is more than \$100/month_)
-- You want "more control" over your infrastructure
+- You want **more control** over your infrastructure
   e.g: to run a specific version of software or database.
 - Your client/boss has instructed you
-  to use a _specific_ "cloud" provider.
-- Curiosity to extend your
-  "back end infrastructure" knowledge to be a more
-  "well-rounded" developer.
+  to use a _specific_ cloud provider.
+- **_Curiosity_** to _extend_ your
+  **backend infrastructure knowledge** to be a more
+  _well-rounded_ engineer.
 
 ## What?
 
@@ -45,7 +49,7 @@ e.g: https://www.sciencemuseum.org.uk <br />
 We have _several_ clients who use (_and **love**_) Heroku e.g:
 https://www.ellenmacarthurfoundation.org <br />
 For the National Health Service (NHS) in England,
-(_who have a major contract with Microsoft_) 
+(_who have a major contract with Microsoft_)
 we deployed to Microsoft Azure. <br />
 We have clients who still own their own "_Bare Metal_" Servers.
 
@@ -54,23 +58,29 @@ We have clients who still own their own "_Bare Metal_" Servers.
 We have produced a guide for each of our most-used
 infrastructure/platform providers:
 
-- AWS: https://github.com/dwyl/learn-amazon-web-services
-- AWS Lambda: https://github.com/dwyl/learn-aws-lambda
-- Azure: https://github.com/dwyl/learn-microsoft-azure
-- Heroku: https://github.com/dwyl/learn-heroku
-- Fly.io: [fly-phoenix-setup.md](https://github.com/dwyl/learn-devops/blob/master/fly-phoenix-setup.md)
-- Linode: [linode-setup.md](https://github.com/dwyl/learn-devops/blob/master/linode-setup.md)
-- DigitalOcean: [nodejs-digital-ocean-centos-dokku.md](https://github.com/dwyl/learn-devops/blob/master/nodejs-digital-ocean-centos-dokku.md)
-
+- AWS:
+  [dwyl/learn-amazon-web-services](https://github.com/dwyl/learn-amazon-web-services)
+- AWS Lambda:
+  [dwyl/learn-aws-lambda](https://github.com/dwyl/learn-aws-lambda)
+- Azure:
+  [dwyl/learn-microsoft-azure](https://github.com/dwyl/learn-microsoft-azure)
+- Heroku:
+  [dwyl/learn-heroku](https://github.com/dwyl/learn-heroku)
+- Fly.io:
+  [fly-phoenix-setup.md](https://github.com/dwyl/learn-devops/blob/master/fly-phoenix-setup.md)
+- Linode:
+  [linode-setup.md](https://github.com/dwyl/learn-devops/blob/master/linode-setup.md)
+- DigitalOcean:
+  [nodejs-digital-ocean-centos-dokku.md](https://github.com/dwyl/learn-devops/blob/master/nodejs-digital-ocean-centos-dokku.md)
 
 ### `Gogs` Git Server
 
-We needed to run a our own `Git` server 
+We needed to run a our own `Git` server
 for one of our projects.
-So we deployed `Gogs` 
+So we deployed `Gogs`
 both `locally` and to Fly.io
 and documented it:
-[`/gogs`]()
+[`/gogs`](gogs/README.md)
 
 ### Node.js
 
@@ -123,17 +133,20 @@ _if you have time to help please comment on the issue!_
 
 ### Videos
 
-- What is DevOps: https://youtu.be/I7vHqXY22gg
-- What is DevOps? - In Simple English: https://youtu.be/_I94-tJlovg
+- What is DevOps:
+  [youtu.be/I7vHqXY22gg](https://youtu.be/I7vHqXY22gg)
+- What is DevOps? - In Simple English:
+  [youtu.be/_I94-tJlovg](https://youtu.be/_I94-tJlovg)
   (_good info but last minute is a RackSpace pitch_)
-- DevOps for Beginners Course Introduction: https://youtu.be/v7ZcZfGBFcU
+- DevOps for Beginners Course Introduction:
+  [youtu.be/v7ZcZfGBFcU](https://youtu.be/v7ZcZfGBFcU)
 
 ### Background Reading
 
-+ https://en.wikipedia.org/wiki/DevOps
-+ https://theagileadmin.com/what-is-devops
-+ https://newrelic.com/devops/what-is-devops
-+ https://logit.io/blog/post/what-is-devops
+- [wikipedia.org/DevOps](https://en.wikipedia.org/wiki/DevOps)
+- [theagileadmin.com/what-is-devops](https://theagileadmin.com/what-is-devops)
+- [newrelic.com/devops/what-is-devops](https://newrelic.com/devops/what-is-devops)
+- [logit.io/blog/post/what-is-devops](https://logit.io/blog/post/what-is-devops)
 
 ### Linode-specific How-tos
 
@@ -182,7 +195,9 @@ once the project's database goes above a certain size.
 -->
 <br />
 Thanks for learning with us!
-Your feedback/questions is always welcome. 
+Your feedback/questions is always welcome.
+Please star if you found this useful. ⭐ 🙏
+<br />
 
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/dwyl/learn-devops/issues)
 [![HitCount](http://hits.dwyl.com/dwyl/learn-devops.svg)](http://hits.dwyl.com/dwyl/learn-devops)
