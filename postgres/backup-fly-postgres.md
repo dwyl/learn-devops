@@ -16,7 +16,7 @@ from a Fly.io `Postgres` instance.
 ## How? 👩‍💻
 
 ### 0. Before You Start
-n
+
 Before you attempt to access the `Postgres` database on `Fly.io`,
 ensure you are authenticated with your `Fly.io` account;
 run the command:
