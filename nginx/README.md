@@ -5,6 +5,9 @@ to proxy an app on a `Hetzner` server.
 
 ## 1. Install `nginx` on `Ubuntu`
 
+Official instructions:
+https://ubuntu.com/tutorials/install-and-configure-nginx#1-overview
+
 ```sh
 sudo apt install nginx
 ```
@@ -36,6 +39,85 @@ Output:
              └─805 "nginx: worker process"
 ```
 
-Official instructions:
-https://ubuntu.com/tutorials/install-and-configure-nginx#1-overview
+Visit:
+http://88.99.81.115
 
+![nginx-running](https://github.com/user-attachments/assets/f8754c78-7243-4844-9ab6-eb642d4ab2e7)
+
+
+
+## 2. Certbot
+
+Instructions:
+https://certbot.eff.org/instructions?ws=nginx&os=ubuntufocal
+
+```sh
+sudo snap install --classic certbot
+```
+
+Output:
+
+```sh
+2025-03-21T11:48:11Z INFO Waiting for automatic snapd restart...
+certbot 3.3.0 from Certbot Project (certbot-eff✓) installed
+```
+
+Link the command:
+
+```sh
+sudo ln -s /snap/bin/certbot /usr/bin/certbot
+```
+
+```sh
+sudo certbot --nginx
+```
+
+Output:
+
+```sh
+Requesting a certificate for dwy.is
+
+Successfully received certificate.
+Certificate is saved at: /etc/letsencrypt/live/dwy.is/fullchain.pem
+Key is saved at:         /etc/letsencrypt/live/dwy.is/privkey.pem
+This certificate expires on 2025-06-19.
+These files will be updated when the certificate renews.
+Certbot has set up a scheduled task to automatically renew this certificate in the background.
+
+Deploying certificate
+Successfully deployed certificate for dwy.is to /etc/nginx/sites-enabled/default
+Congratulations! You have successfully enabled HTTPS on https://dwy.is
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+If you like Certbot, please consider supporting our work by:
+ * Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
+ * Donating to EFF:                    https://eff.org/donate-le
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+```
+
+Dry run renewal:
+
+```sh
+sudo certbot renew --dry-run
+```
+
+```sh
+Saving debug log to /var/log/letsencrypt/letsencrypt.log
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Processing /etc/letsencrypt/renewal/dwy.is.conf
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Account registered.
+Simulating renewal of an existing certificate for dwy.is
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Congratulations, all simulated renewals succeeded:
+  /etc/letsencrypt/live/dwy.is/fullchain.pem (success)
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+```
+
+## 3. Configure `nginx` Proxy
+
+```sh
+cd /etc/nginx/
+```
