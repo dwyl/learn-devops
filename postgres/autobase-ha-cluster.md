@@ -1,17 +1,20 @@
+<!--
 Hi friends, my name is Nelson and this is dwyl. <br />
-Today we're going to deploy a Postgres Database Cluster
+Today we're going to
+-->
+Deploy a Postgres Database Cluster
 on 
 [`Hetzner`]
 using [**autobase**](https://autobase.tech).
 
-As always, detailed instructions 
+As always, detailed instructions
 for how we do _everything_ are available on `GitHub`;
 link in the description. 🔗
 
 Along the way we will clarify the steps as possible.
 But keep in mind it's _not possible_ to cover everything in a **7 minute video**.
 
-If you have questions, suggestions or just want to say hi, 
+If you have questions, suggestions or just want to say hi,
 **please comment on YouTube**;
 thanks.
 
@@ -20,7 +23,7 @@ With all that out of the way, lets dive in!
 ## 1. Login to `Hetzner` Cloud
 
 
-When you _first_ login to `Hetzner`, 
+When you _first_ login to `Hetzner`,
 you will see the message:
 
 "You don't have any servers yet."
