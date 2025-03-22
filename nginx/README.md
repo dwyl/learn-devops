@@ -45,7 +45,6 @@ http://88.99.81.115
 ![nginx-running](https://github.com/user-attachments/assets/f8754c78-7243-4844-9ab6-eb642d4ab2e7)
 
 
-
 ## 2. Certbot
 
 Instructions:
@@ -116,8 +115,107 @@ Congratulations, all simulated renewals succeeded:
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ```
 
-## 3. Configure `nginx` Proxy
+The full config including the TLS is in
+`/etc/nginx/sites-available/default`
+
+## 3. Configure `nginx` Subdomain
 
 ```sh
-cd /etc/nginx/
+cd /etc/nginx/sites-enabled/autobase.dwy.is
+```
+
+Test `nginx` config:
+
+```sh
+nginx -t
+```
+
+You should see output similar to the following:
+
+```sh
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+```
+
+Test a specific configuration file:
+
+```sh
+nginx -t -c /path/to/conf
+```
+
+In our case:
+
+```sh
+nginx -t -c /etc/nginx/sites-enabled/autobase.dwy.is
+```
+
+If your config fails the test for any reason,
+try checking it online:
+[google.com/search?q=nginx+syntax+check+online](https://www.google.com/search?q=nginx+syntax+check+online)
+e.g:
+[getpagespeed.com/check-nginx-config](https://www.getpagespeed.com/check-nginx-config)
+
+Restart `nginx`:
+
+```sh
+sudo service nginx restart
+```
+
+Wildcard Certificate for Domain:
+https://www.baeldung.com/linux/letsencrypt-certbot-add-subdomains
+
+```sh
+sudo certbot certonly --manual --preferred-challenges=dns -d example.com -d *.example.com
+```
+
+In our case:
+
+```sh
+sudo certbot certonly --manual --preferred-challenges=dns -d dwy.is -d *.dwy.is
+```
+
+Output:
+
+```sh
+Saving debug log to /var/log/letsencrypt/letsencrypt.log
+Plugins selected: Authenticator manual, Installer None
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+You have an existing certificate that contains a portion of the domains you
+requested (ref: /etc/letsencrypt/renewal/dwy.is.conf)
+
+It contains these names: dwy.is
+
+You requested these names for the new certificate: dwy.is, *.dwy.is.
+
+Do you want to expand and replace this existing certificate with the new
+certificate?
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+(E)xpand/(C)ancel: E
+Renewing an existing certificate for dwy.is and *.dwy.is
+Performing the following challenges:
+dns-01 challenge for dwy.is
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Please deploy a DNS TXT record under the name:
+
+_acme-challenge.dwy.is.
+
+with the following value:
+
+8GC-85xs1BGQDlU7YKpxA5fyHBV20PqBU8aMA9lAN10
+
+Before continuing, verify the TXT record has been deployed. Depending on the DNS
+provider, this may take some time, from a few seconds to multiple minutes. You can
+check if it has finished deploying with aid of online tools, such as the Google
+Admin Toolbox: https://toolbox.googleapps.com/apps/dig/#TXT/_acme-challenge.dwy.is.
+Look for one or more bolded line(s) below the line ';ANSWER'. It should show the
+value(s) you've just added.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Press Enter to Continue
+```
+
+```sh
+dig -t txt _acme-challenge.dwy.is
 ```

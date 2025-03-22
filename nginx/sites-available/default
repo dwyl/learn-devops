@@ -158,6 +158,4 @@ server {
 	listen [::]:80 ;
     server_name dwy.is;
     return 404; # managed by Certbot
-
-
 }
