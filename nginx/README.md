@@ -146,7 +146,7 @@ nginx -t -c /path/to/conf
 In our case:
 
 ```sh
-nginx -t -c /etc/nginx/sites-enabled/autobase.dwy.is
+nginx -t -c /etc/nginx/sites-enabled/autobase
 ```
 
 If your config fails the test for any reason,
@@ -161,17 +161,19 @@ Restart `nginx`:
 sudo service nginx restart
 ```
 
+## 4. Wildcard Certificate (Failed)
+
 Wildcard Certificate for Domain:
 https://www.baeldung.com/linux/letsencrypt-certbot-add-subdomains
 
 ```sh
-sudo certbot certonly --manual --preferred-challenges=dns -d example.com -d *.example.com
+sudo certbot certonly -i nginx -d example.com -d *.example.com
 ```
 
 In our case:
 
 ```sh
-sudo certbot certonly --manual --preferred-challenges=dns -d dwy.is -d *.dwy.is
+sudo certbot certonly -i nginx -d dwy.is -d *.dwy.is -v
 ```
 
 Output:
@@ -216,6 +218,50 @@ value(s) you've just added.
 Press Enter to Continue
 ```
 
+I created the `TXT` record immediatley:
+
+https://ap.www.namecheap.com/domains/domaincontrolpanel/dwy.is/advancedns
+
+![dwyis-txt-record](https://github.com/user-attachments/assets/80ddea19-d06c-4d71-8c8e-f86ee2acd9dc)
+
+But it never propagated ... ⏳
+
+https://toolbox.googleapps.com/apps/dig/#TXT/_acme-challenge.dwy.is
+
+![google-dig-txt](https://github.com/user-attachments/assets/6ccbb156-6c34-4d67-9c13-f69db9b47a76)
+
+I refreshed this like a million times over `48h`
+but it never updated.
+
 ```sh
 dig -t txt _acme-challenge.dwy.is
+```
+
+Sadly, adding the wildcard TLS cert was a dead-end
+because the `TXT` record never updates on `NameCheap` ...
+I guess it's _Cheap_ for a _reason_ ... 😢
+
+...
+
+I decided to contact `NameCheap` support via live chat.
+
+
+Final output:
+
+```sh
+Renewing an existing certificate for dwy.is and *.dwy.is
+Reloading nginx server after certificate issuance
+
+Successfully received certificate.
+Certificate is saved at: /etc/letsencrypt/live/dwy.is/fullchain.pem
+Key is saved at:         /etc/letsencrypt/live/dwy.is/privkey.pem
+This certificate expires on 2025-06-21.
+These files will be updated when the certificate renews.
+Certbot has set up a scheduled task to automatically renew this certificate in the background.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+If you like Certbot, please consider supporting our work by:
+ * Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
+ * Donating to EFF:                    https://eff.org/donate-le
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ```
