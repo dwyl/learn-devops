@@ -1,7 +1,7 @@
 # `nginx` Fast Setup
 
 This is a speed run of using `nginx`
-to proxy an app on a `Hetzner` server.
+to proxy an app running on a `Hetzner` server.
 
 ## 1. Install `nginx` on `Ubuntu`
 
@@ -243,7 +243,18 @@ I guess it's _Cheap_ for a _reason_ ... 😢
 
 ...
 
-I decided to contact `NameCheap` support via live chat.
+I decided to contact `NameCheap` support via live chat:
+https://www.namecheap.com/help-center/live-chat
+
+They were helpful and together we determined that _I_ had misconfigured the `TXT` record ... 🤦
+
+Updated config:
+
+https://ap.www.namecheap.com/domains/domaincontrolpanel/dwy.is/advancedns
+
+![dwy.is-dns-txt-record](https://github.com/user-attachments/assets/c19e6cae-132c-4f70-ba99-6bd8829f0d13)
+
+Full transcript: [Chat_Transcript_23_Mar_2025.pdf](https://github.com/user-attachments/files/19410954/Chat_Transcript_23_Mar_2025.pdf)
 
 
 Final output:
@@ -265,3 +276,7 @@ If you like Certbot, please consider supporting our work by:
  * Donating to EFF:                    https://eff.org/donate-le
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ```
+
+Working!
+
+![autobase.dwy.is-with-ssl](https://github.com/user-attachments/assets/15411040-860f-4a56-9c2d-91fc8702c318)

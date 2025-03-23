@@ -1,24 +1,20 @@
 server {
   listen 80;
   server_name autobase.dwy.is;
-
-  location / {
-    proxy_pass http://172.17.0.1:82;
-  }
+  
+  return 301 https://$host$request_uri;
 }
 
 server {
   server_name autobase.dwy.is;
 
-	location / {
-    proxy_pass http://172.17.0.1:82;
-	}
-
-  # listen [::]:443 ssl ipv6only=on; # managed by Certbot
   listen 443 ssl; # managed by Certbot
   ssl_certificate /etc/letsencrypt/live/dwy.is/fullchain.pem; # managed by Certbot
   ssl_certificate_key /etc/letsencrypt/live/dwy.is/privkey.pem; # managed by Certbot
   include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
   ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
-}
 
+  location / {
+    proxy_pass http://172.17.0.1:82;
+	}
+}
