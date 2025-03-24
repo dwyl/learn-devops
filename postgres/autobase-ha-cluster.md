@@ -3,8 +3,8 @@ Hi friends, my name is Nelson and this is dwyl. <br />
 Today we're going to
 -->
 Deploy a Postgres Database Cluster
-on 
-[`Hetzner`]
+(on
+[`Hetzner`](../hetzner))
 using [**autobase**](https://autobase.tech).
 
 As always, detailed instructions

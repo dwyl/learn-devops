@@ -1,9 +1,29 @@
-# `nginx` Fast Setup
+# `nginx` _Speedy_ Setup
 
 This is a speed run of using `nginx`
 to proxy an app running on a `Hetzner` server.
 
 ## 1. Install `nginx` on `Ubuntu`
+
+`SSH` into the virtual machine, e.g: 
+
+```sh
+ssh root@88.99.81.115
+```
+
+Ensure that everything is up-to-date on the VM:
+
+```sh
+sudo apt update -y && sudo apt full-upgrade -y && sudo apt autoremove -y && sudo apt clean -y && sudo apt autoclean -y
+```
+
+Followed by:
+
+```sh
+sudo reboot
+```
+
+Now we can proceed with installing `nginx`.
 
 Official instructions:
 https://ubuntu.com/tutorials/install-and-configure-nginx#1-overview
@@ -67,6 +87,8 @@ Link the command:
 sudo ln -s /snap/bin/certbot /usr/bin/certbot
 ```
 
+Basic `certbot` setup for an `nginx` server:
+
 ```sh
 sudo certbot --nginx
 ```
@@ -118,11 +140,17 @@ Congratulations, all simulated renewals succeeded:
 The full config including the TLS is in
 `/etc/nginx/sites-available/default`
 
+Now create a new config file
+_just_ for the subdomain.
+
 ## 3. Configure `nginx` Subdomain
 
 ```sh
-cd /etc/nginx/sites-enabled/autobase.dwy.is
+vi /etc/nginx/sites-enabled/autobase
 ```
+
+Paste the contents from this file:
+`nginx/sites-enabled/autobase`
 
 Test `nginx` config:
 
@@ -161,10 +189,15 @@ Restart `nginx`:
 sudo service nginx restart
 ```
 
-## 4. Wildcard Certificate (Failed)
+## 4. Wildcard Certificate
 
-Wildcard Certificate for Domain:
+In our case, I actually wanted a wildcard certificate
+so that I can add any subdomain I want later.
+
+Wildcard Certificate instructions:
 https://www.baeldung.com/linux/letsencrypt-certbot-add-subdomains
+
+Sample command:
 
 ```sh
 sudo certbot certonly -i nginx -d example.com -d *.example.com
@@ -218,13 +251,17 @@ value(s) you've just added.
 Press Enter to Continue
 ```
 
-I created the `TXT` record immediatley:
+I created the `TXT` record:
 
 https://ap.www.namecheap.com/domains/domaincontrolpanel/dwy.is/advancedns
 
 ![dwyis-txt-record](https://github.com/user-attachments/assets/80ddea19-d06c-4d71-8c8e-f86ee2acd9dc)
 
-But it never propagated ... ⏳
+But this was incorrect!
+The host needed to be `_acme-challenge`
+***NOT*** `_acme-challenge.dwy.is`
+as was implied by `certbot`.
+i.e. the domain `dwy.is` should not be in the host!
 
 https://toolbox.googleapps.com/apps/dig/#TXT/_acme-challenge.dwy.is
 
@@ -236,12 +273,6 @@ but it never updated.
 ```sh
 dig -t txt _acme-challenge.dwy.is
 ```
-
-Sadly, adding the wildcard TLS cert was a dead-end
-because the `TXT` record never updates on `NameCheap` ...
-I guess it's _Cheap_ for a _reason_ ... 😢
-
-...
 
 I decided to contact `NameCheap` support via live chat:
 https://www.namecheap.com/help-center/live-chat
@@ -255,7 +286,6 @@ https://ap.www.namecheap.com/domains/domaincontrolpanel/dwy.is/advancedns
 ![dwy.is-dns-txt-record](https://github.com/user-attachments/assets/c19e6cae-132c-4f70-ba99-6bd8829f0d13)
 
 Full transcript: [Chat_Transcript_23_Mar_2025.pdf](https://github.com/user-attachments/files/19410954/Chat_Transcript_23_Mar_2025.pdf)
-
 
 Final output:
 
@@ -280,3 +310,6 @@ If you like Certbot, please consider supporting our work by:
 Working!
 
 ![autobase.dwy.is-with-ssl](https://github.com/user-attachments/assets/15411040-860f-4a56-9c2d-91fc8702c318)
+
+Also used:
+https://dnschecker.org/#TXT/_acme-challenge.dwy.is
