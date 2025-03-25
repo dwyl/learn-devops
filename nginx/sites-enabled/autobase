@@ -1,20 +1,43 @@
 server {
   listen 80;
   server_name autobase.dwy.is;
-  
+
   return 301 https://$host$request_uri;
 }
 
 server {
   server_name autobase.dwy.is;
 
+  location / {
+    # stackoverflow.com/questions/14501047/add-response-header-nginx-proxy-pass
+    # 1. hide the Access-Control-Allow-Origin from the server response
+    proxy_hide_header Access-Control-Allow-Origin;
+    # 2. add a new custom header that allows all * origins instead
+    add_header 'Access-Control-Allow-Origin' '*';
+    add_header 'Access-Control-Allow-Credentials' 'true';
+    add_header 'Access-Control-Allow-Methods' '*';
+    add_header 'Access-Control-Allow-Headers' '*';
+    
+    proxy_pass http://172.17.0.1:82;
+  }
+
   listen 443 ssl; # managed by Certbot
   ssl_certificate /etc/letsencrypt/live/dwy.is/fullchain.pem; # managed by Certbot
   ssl_certificate_key /etc/letsencrypt/live/dwy.is/privkey.pem; # managed by Certbot
   include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
   ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+}
+
+server {
+  listen 8080 ssl;
+  ssl_certificate /etc/letsencrypt/live/dwy.is/fullchain.pem; # managed by Certbot
+  ssl_certificate_key /etc/letsencrypt/live/dwy.is/privkey.pem; # managed by Certbot
+  include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+  ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+  server_name autobase.dwy.is;
 
   location / {
-    proxy_pass http://172.17.0.1:82;
-	}
+    proxy_pass http://172.17.0.1:8082/;
+  }
 }

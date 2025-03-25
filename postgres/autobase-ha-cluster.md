@@ -140,7 +140,7 @@ with the IP (v4) address of your server
 and `secret_token`in the `PG_CONSOLE_AUTHORIZATION_TOKEN`
 
 + IP: 116.202.31.52 (yours will be different!)
-+ Token: 5b0b6259-a7d4-4435-947d-0dff528912ba (create your own!)
++ Token: 5b0b6259-a7d4-4435-947dba (create your own!)
 
 Actual: 
 
@@ -149,7 +149,7 @@ docker run -d --name autobase-console \
   --publish 80:80 \
   --publish 8080:8080 \
   --env PG_CONSOLE_API_URL=http://116.202.31.52:8080/api/v1 \
-  --env PG_CONSOLE_AUTHORIZATION_TOKEN=5b0b6259-a7d4-4435-947d-0dff528912ba \
+  --env PG_CONSOLE_AUTHORIZATION_TOKEN=5b0b6259-a7d4-4435-947dba \
   --env PG_CONSOLE_DOCKER_IMAGE=autobase/automation:latest \
   --volume console_postgres:/var/lib/postgresql \
   --volume /var/run/docker.sock:/var/run/docker.sock \
@@ -157,7 +157,6 @@ docker run -d --name autobase-console \
   --restart=unless-stopped \
   autobase/console:latest
 ```
-
 
 Confirm it worked with the `docker ps` command. You should see something similar to the following:
 
@@ -167,11 +166,10 @@ CONTAINER ID   IMAGE                     COMMAND              
 9740dfd66c42   autobase/console:latest   "/usr/bin/supervisor…"   About a minute ago   Up About a minute   0.0.0.0:80->80/tcp, :::80->80/tcp, 0.0.0.0:8080->8080/tcp, :::8080->8080/tcp, 5432/tcp   autobase-console
 ```
 
-
 ## 6. Login To `autobase`Console Web UI
 
-Visit the IP Address of your server in you web browser e.g: 
-http://116.202.31.52/
+Visit the IP Address of your server in you web browser e.g:
+http://116.202.31.52
 
 You should see a login screen:
 
@@ -193,17 +191,17 @@ Select `hetzner`and the datacenter region you prefer, in our case Europe:
 
 <img width="2032" alt="create-cluster-europe" src="https://github.com/user-attachments/assets/d727159b-7d18-4032-8b70-b16367b288a4">
 
-The default disk storage is **`100Gb`**; 
+The default disk storage is **`100Gb`**;
 
 <img width="2032" alt="cluster-disk-storage" src="https://github.com/user-attachments/assets/aebde3e2-ef97-4470-8881-3c55e6d9e0a5">
 
 this is _way_ too much for most simple projects.
-lower it to **`10Gb`** for each instance to instantly save **50%** of the cost! 
+lower it to **`10Gb`** for each instance to instantly save **50%** of the cost!
 (you're welcome!)
 
 <img width="2032" alt="disk-storage-10gb" src="https://github.com/user-attachments/assets/cf2fb520-adee-4a9e-a0a7-616a0de91515">
 
-> **Note**: all values for `DISK`storage, `RAM`, and `CPU`can easily be scaled later. 
+> **Note**: all values for `DISK`storage, `RAM`, and `CPU`can easily be scaled later.
 
 Finally, you'll need to add your `public` SSH key.
 
@@ -238,9 +236,10 @@ Click on the "**Generate API token**" button:
 
 <img width="205" alt="generate-api-token" src="https://github.com/user-attachments/assets/bf41fc91-ca03-4ba2-ae18-5963958ffb13">
 
-That will open _another_ modal window, input the description for your key, 
+That will open _another_ modal window,
+input the description for your key,
 e.g:
-"postgres-cluster-api-key" 
+"postgres-cluster-api-key"
 and select "**Read and Write**":
 
 <img width="559" alt="generate-api-token-modal" src="https://github.com/user-attachments/assets/d8d3d576-b59f-4647-b3ad-c09d68f5a11c">
@@ -260,11 +259,13 @@ Copy the token to your clipboard, e.g:
 zH2qdgCeogrKjVKgV7sngMRxCfewgSdDARUBr8yqcjuHhGzlNdY72H13Sjh1il2D
 ```
 
+> **Note**: for security reasons, this API key is no longer valid.
+
 Paste it into the Cluster creation window:
 
 <img width="2032" alt="paste-token-in-auto-window" src="https://github.com/user-attachments/assets/670e1a21-51ff-4922-a432-adf350fb7a22">
 
-_Optionally_ save the API Key to the console and then 
+_Optionally_ save the API Key to the console and then
 click "**CREATE CLUSTER**":
 
 <img width="476" alt="create-cluster" src="https://github.com/user-attachments/assets/cc55c520-760d-42c1-82f6-026b07cfa976">
@@ -335,25 +336,22 @@ But when trying to run `psql` again, we still get an error:
 Error: You must install at least one postgresql-client-<version> package
 ```
 
-
-
 ## Outro:
 
 Given that this is a technical guide for an evolving system, 
 it may need to be enhanced/extended or updated in future,
-that will be done on GitHub; 
+that will be done on GitHub;
 _everyone_ is welcome to and _encouraged_ to contribute!
 Again, link in the description.
 
 Thanks for watching/listening.
 If you found it useful and want to see more,
-please subscribe. 
-
+please subscribe.
 
 ## Privacy Disclaimer
 
-By the time you read/watch this, 
-all of the sensitive data such as passwords, IP addresses, 
+By the time you read/watch this,
+all of the sensitive data such as passwords, IP addresses,
 public keys and auth tokens will have been updated.
 This avoids anyone getting ideas about accessing backend systems.
 
@@ -362,6 +360,5 @@ so that we can be as transparent as possible.
 We have a strong security & privacy focus for all our systems
 so all private backend systems like databases are always locked down.
 
-As always, if you have a security question or concern, 
+As always, if you have a security question or concern,
 Please contact us responsibly.
-
