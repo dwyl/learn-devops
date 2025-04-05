@@ -1,18 +1,31 @@
+<div align="center">
+
+# High Availability `Postgres` Cluster With `Autobase`
+
+![autobase-hero-image](https://github.com/user-attachments/assets/51ff8785-2f07-4a23-8892-41ff6a6d2aaa)
+
+</div>
+
 <!--
 Hi friends, my name is Nelson and this is dwyl. <br />
 Today we're going to
 -->
-Deploy a Postgres Database Cluster
+Deploy a
+[high availability](https://en.wikipedia.org/wiki/High_availability)
+`Postgres` database cluster
 (on
 [`Hetzner`](../hetzner))
-using [**autobase**](https://autobase.tech).
+using [**`autobase`**](https://autobase.tech).
 
+<!--
 As always, detailed instructions
 for how we do _everything_ are available on `GitHub`;
 link in the description. 🔗
+-->
 
-Along the way we will clarify the steps as possible.
-But keep in mind it's _not possible_ to cover everything in a **7 minute video**.
+Along the way we will clarify as many of the steps as possible. <br />
+But please keep in mind it's _not possible_
+to cover everything in a **7 minute video**.
 
 If you have questions, suggestions or just want to say hi,
 **please comment on YouTube**;
@@ -21,7 +34,6 @@ thanks.
 With all that out of the way, lets dive in!
 
 ## 1. Login to `Hetzner` Cloud
-
 
 When you _first_ login to `Hetzner`,
 you will see the message:
@@ -32,10 +44,16 @@ you will see the message:
 
 Click the "**Add Server**" button to begin your quest!
 
-## 2. Create a New Server (VPS)
+> If you don't yet have a `Hezner` account,
+> please consider using our **referral link**:
+> [hetzner.cloud/?ref=ahpZuUB3t0XI](https://hetzner.cloud/?ref=ahpZuUB3t0XI) 🔗
+> to get **`$20`** in credit. 💵 <br />
+> Helps us do what we love too. Thanks. ❤
 
-Select all the default options, 
-add your `ssh` `public` key 
+## 2. Create a New "Cloud" Virtual Private Server (VPS)
+
+Select all the default options,
+add your `ssh` `public` key
 and create your server.
 
 <img width="2032" alt="new-server-created" src="https://github.com/user-attachments/assets/b6c61f0c-d86a-472d-8a91-5994fb46becb">
@@ -78,9 +96,9 @@ pip3 install ansible
 
 ### Install `Docker`
 
-The `Ubuntu` Server 
-
-Follow the installation instructions in the **official `Docker` docs**:
+Install `Docker` on the `Ubuntu` server
+following the installation instructions
+in the **official `Docker` docs**:
 https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository
 
 Run:
@@ -102,6 +120,7 @@ sudo apt-get update
 ```
 
 Followed by:
+
 ```sh
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
@@ -112,12 +131,12 @@ Verify that the installation is successful by running the `hello-world` image:
 $ sudo docker run hello-world
 ```
 
-With that confirmed working, 
+With that confirmed working,
 go back to the previous step and run the `autobase`command.
 
-
-
 ## 5. Run `autobase` Console Boot Script
+
+Install and run the `latest` version of `Autobase` console.
 
 Sample:
 
@@ -135,14 +154,14 @@ docker run -d --name autobase-console \
   autobase/console:latest
 ```
 
-You will nee to replace the `localhost` in the `PG_CONSOLE_API_URL` 
+You will nee to replace the `localhost` in the `PG_CONSOLE_API_URL`
 with the IP (v4) address of your server
-and `secret_token`in the `PG_CONSOLE_AUTHORIZATION_TOKEN`
+and `secret_token` for the `PG_CONSOLE_AUTHORIZATION_TOKEN`
 
 + IP: 116.202.31.52 (yours will be different!)
 + Token: 5b0b6259-a7d4-4435-947dba (create your own!)
 
-Actual: 
+Actual:
 
 ```sh
 docker run -d --name autobase-console \
@@ -158,7 +177,8 @@ docker run -d --name autobase-console \
   autobase/console:latest
 ```
 
-Confirm it worked with the `docker ps` command. You should see something similar to the following:
+Confirm it worked with the `docker ps` command.
+You should see something similar to the following:
 
 ```sh
 CONTAINER ID   IMAGE                     COMMAND                  CREATED              STATUS              PORTS                                                                                    NAMES
@@ -166,7 +186,7 @@ CONTAINER ID   IMAGE                     COMMAND              
 9740dfd66c42   autobase/console:latest   "/usr/bin/supervisor…"   About a minute ago   Up About a minute   0.0.0.0:80->80/tcp, :::80->80/tcp, 0.0.0.0:8080->8080/tcp, :::8080->8080/tcp, 5432/tcp   autobase-console
 ```
 
-## 6. Login To `autobase`Console Web UI
+## 6. Login To `autobase` Console Web UI
 
 Visit the IP Address of your server in you web browser e.g:
 http://116.202.31.52
@@ -211,7 +231,7 @@ Finally, you'll need to add your `public` SSH key.
 cat ~/.ssh/id_ed25519.pub | pbcopy
 ```
 
-Paste it into the `SSH public key*`field:
+Paste it into the **`SSH public key`** field:
 
 <img width="2032" alt="add-ssh-key" src="https://github.com/user-attachments/assets/37643591-3493-43a2-8006-475084ac6bd2">
 
@@ -338,7 +358,7 @@ Error: You must install at least one postgresql-client-<version> package
 
 ## Outro:
 
-Given that this is a technical guide for an evolving system, 
+Given that this is a technical guide for an evolving system,
 it may need to be enhanced/extended or updated in future,
 that will be done on GitHub;
 _everyone_ is welcome to and _encouraged_ to contribute!
@@ -361,4 +381,7 @@ We have a strong security & privacy focus for all our systems
 so all private backend systems like databases are always locked down.
 
 As always, if you have a security question or concern,
-Please contact us responsibly.
+please contact us responsibly.
+<!--
+TODO: add contact method.
+-->

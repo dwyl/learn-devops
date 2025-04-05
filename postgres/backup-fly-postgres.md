@@ -1,9 +1,9 @@
 <div align="center">
 
-# How to Backup Fly.io Postgres Database
+# How to Backup `Fly.io` `Postgres` Database
 
 A comprehensive step-by-step guide
-to backing-up your Fly.io `Postgres` database
+to backing-up your `Fly.io` `Postgres` database
 on your `localhost`.
 
 </div>
@@ -12,6 +12,15 @@ on your `localhost`.
 
 You need to get the data
 from a Fly.io `Postgres` instance.
+_Your_ reason may be different,
+see our [context](#context-) below.
+
+## What? 🤔
+
+Backup your `Postgres` DB running on `Fly.io`
+and use the data somewhere `else`;
+in our case we are migrating our DBs to `Hetzner`
+where we have a High Availability Cluster.
 
 ## How? 👩‍💻
 
@@ -79,29 +88,39 @@ pg_dump -h localhost -U hits_e2k5m6j4k46d0v7p -d hits --verbose > backup.sql
 
 > **Note**: If you need to get the password for the
 `Postgres` instance, use the following command:
+
 ```sh
 flyctl ssh console -a hits -C "printenv DATABASE_URL"
 ```
+
 > in our case it was:
+
 ```sh
 flyctl ssh console -a hits -C "printenv DATABASE_URL"
 ```
+
 We saw:
+
 ```sh
 postgres://hits_e2k5m6j4k46d0v7p:baf3d9f0bdf155bfetc@hits-db.internal:5432/hits?sslmode=disable
 ```
+
 Where the first section `postgres://` is the protocol,
 the `hits_e2k5m6j4k46d0v7p` is the DB username,
 `baf3d9f0bdf155bfetc` is the password
 and `hits` is the name of the database.
 Ref:
 https://community.fly.io/t/how-to-view-environment-variables-in-a-fly-machine/10830/2
+
 Once you have the password,
 export it as an environtment variable:
+
 ```sh
 export PGPASSWORD="$put_here_the_password"
 ```
-> in our case it was:
+
+in our case it was:
+
 ```sh
 export PGPASSWORD="baf3d9f0bdf155bfetc"
 ```
@@ -158,7 +177,7 @@ e.g: http://localhost:8081/#
 
 <img width="562" alt="image" src="https://github.com/user-attachments/assets/8fabfa34-c7c5-4405-8721-a56821394957">
 
-i.e. there have been 3 page views on https://github.com/dwyl/start-here since we did the SQL dump a few mins ago. 
+i.e. there have been 3 page views on https://github.com/dwyl/start-here since we did the SQL dump a few mins ago.
 
 We can check the "live" count at: https://hits.dwyl.com/dwyl/start-here.svg
 e.g: ![hits-start-here-svg](https://hits.dwyl.com/dwyl/start-here.svg)

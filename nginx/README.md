@@ -1,7 +1,11 @@
+<div align="center">
+
 # `nginx` _Speedy_ Setup
 
 This is a speed run of using `nginx`
 to proxy an app running on a `Hetzner` server.
+
+</div>
 
 ## 1. Install `nginx` on `Ubuntu`
 
