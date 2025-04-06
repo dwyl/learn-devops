@@ -20,7 +20,9 @@ see our [context](#context-) below.
 Backup your `Postgres` DB running on `Fly.io`
 and use the data somewhere `else`;
 in our case we are migrating our DBs to `Hetzner`
-where we have a High Availability Cluster.
+where we have a
+[high availability](https://en.wikipedia.org/wiki/High_availability)
+cluster.
 
 ## How? 👩‍💻
 
