@@ -135,7 +135,7 @@ Once the `pg_dump` command finishes, proceed to the next step.
 
 ### 3. Close your port forwarding
 
-Kill the connection to the `Fly.io` instance 
+Kill the connection to the `Fly.io` instance
 using keyboard shortcut: `Ctrl` + `C` (twice).
 
 ### 4. Restore your local database
@@ -143,7 +143,6 @@ using keyboard shortcut: `Ctrl` + `C` (twice).
 To restore the database you just backed up to `Postgres`
 running on your `localhost`,
 you _first_ need to ensure that `Postgres` is indeed running!
-
 
 With the `backup.sql` on your `localhost`,
 run the following command in the working directory:
