@@ -323,10 +323,6 @@ Actual:
 
 ```sh
 export PGPASSWORD='9Djw2LNRMWwaDS1F9TlxeXiGj4dV3zNk';
-psql -h 88.99.81.115 -p 5432 -U postgres -d postgres
-```
-
-```sh
 psql -h 10.0.1.4 -p 6432 -U postgres -d postgres
 ```
 

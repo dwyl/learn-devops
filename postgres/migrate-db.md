@@ -15,14 +15,14 @@ running on `Hetzner`.
 We wrote _detailed_ instructions for backing up
 a `Postgres` DB running on `Fly.io`,
 see:
-[postgres/backup-fly-postgres.md]
+[postgres/backup-fly-postgres.md](postgres/backup-fly-postgres.md)
 
 <img width="644" alt="backup.sql" src="https://github.com/user-attachments/assets/71cca34d-02e3-4013-87c3-9da118b2a36c" />
 
 With the `backup.sql` on your `localhost`,
 you can start.
 
-## 1. Connect To `Hezner` VPS Using `Cyberduck`
+## 1. Upload `backup.sql` to `Hezner` VPS Using `Cyberduck`v
 
 There are several ways to upload large files to a remote server,
 we've been using
@@ -45,12 +45,27 @@ and navigate to the `/tmp` directory of the VPS:
 
 <img width="591" alt="hits-upload-backup-to-hetzner" src="https://github.com/user-attachments/assets/96047430-cc08-4163-be1e-ca4c73071ff1" />
 
-Drag the `backup.sql` file from the `finder` window on `localhost`
+Drag the `backup.sql` file
+from the `finder` window on `localhost`
 to the `Cyberduc` window to start the upload.
 
 <img width="613" alt="hits-upload-backup-in-progress" src="https://github.com/user-attachments/assets/abb82001-f65f-4ae3-8bb5-6b3d5d0f6f2c" />
 
 Take a screen break and refill your water bottle
-while you wait for upload to complete.
+while you wait for upload to complete. ⏳
 
 <img width="613" alt="hits-upload-complete" src="https://github.com/user-attachments/assets/f8400730-aefb-4f72-b45f-ded1adf68ba4" />
+
+> **Note**: If you prefer to use the `Terminal`
+> to upload the `backup.sql` file
+> use `sftp`:
+https://www.digitalocean.com/community/tutorials/how-to-use-sftp-to-securely-transfer-files-with-a-remote-server
+> e.g:
+```sh
+sftp root@88.99.81.115
+put backup.sql
+```
+
+>>> NEXT: Load the `backup.sql` onto the primary PSQL Server
+
+>>>> SSH into PSQL Leader on MacMini
