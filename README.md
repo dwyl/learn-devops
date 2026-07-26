@@ -14,8 +14,11 @@ to _reliably_ deploy your App and keep it Up!
 You should learn more "advanced" DevOps if:
 
 - You / your team have _out-grown_
+  [**Fly.io**](https://fly.io/speedrun/)
+  or
   [**Heroku**](https://github.com/dwyl/learn-heroku)
-  (_e.g: your Heroku bill is more than \$100/month_)
+  (e.g: your [PaaS](https://en.wikipedia.org/wiki/Platform_as_a_service)
+   bill is more than **$100/month**)
 - You want **more control** over your infrastructure
   e.g: to run a specific version of software or database.
 - Your client/boss has instructed you
@@ -26,10 +29,10 @@ You should learn more "advanced" DevOps if:
 
 ## What?
 
-> "_DevOps integrates developers and operations teams
-> in order to improve collaboration and productivity
-> by automating infrastructure, automating workflows
-> and continuously measuring application performance._"
+> "_**DevOps** integrates **developers** and **operations** teams
+> in order to **improve collaboration** and productivity
+> by **automating infrastructure**, automating workflows
+> and **continuously measuring** application performance._"<br />
 > from: ["**What is DevOps**?"](https://youtu.be/_I94-tJlovg) by RackSpace
 
 ## Who?
