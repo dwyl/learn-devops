@@ -1,0 +1,319 @@
+<div align="center">
+
+# `nginx` _Speedy_ Setup
+
+This is a speed run of using `nginx`
+to proxy an app running on a `Hetzner` server.
+
+</div>
+
+## 1. Install `nginx` on `Ubuntu`
+
+`SSH` into the virtual machine, e.g: 
+
+```sh
+ssh root@88.99.81.115
+```
+
+Ensure that everything is up-to-date on the VM:
+
+```sh
+sudo apt update -y && sudo apt full-upgrade -y && sudo apt autoremove -y && sudo apt clean -y && sudo apt autoclean -y
+```
+
+Followed by:
+
+```sh
+sudo reboot
+```
+
+Now we can proceed with installing `nginx`.
+
+Official instructions:
+https://ubuntu.com/tutorials/install-and-configure-nginx#1-overview
+
+```sh
+sudo apt install nginx
+```
+
+That installs and automatically starts the `nginx` server.
+
+Check the status:
+
+```sh
+service nginx status
+```
+
+Output:
+
+```sh
+● nginx.service - A high performance web server and a reverse proxy server
+     Loaded: loaded (/usr/lib/systemd/system/nginx.service; enabled; preset: enabled)
+     Active: active (running) since Fri 2025-03-21 10:49:46 UTC; 56s ago
+       Docs: man:nginx(8)
+    Process: 754 ExecStartPre=/usr/sbin/nginx -t -q -g daemon on; master_process on; (code=exited, status=0/SUCCESS)
+    Process: 778 ExecStart=/usr/sbin/nginx -g daemon on; master_process on; (code=exited, status=0/SUCCESS)
+   Main PID: 803 (nginx)
+      Tasks: 3 (limit: 4540)
+     Memory: 3.7M (peak: 3.8M)
+        CPU: 34ms
+     CGroup: /system.slice/nginx.service
+             ├─803 "nginx: master process /usr/sbin/nginx -g daemon on; master_process on;"
+             ├─804 "nginx: worker process"
+             └─805 "nginx: worker process"
+```
+
+Visit:
+http://88.99.81.115
+
+![nginx-running](https://github.com/user-attachments/assets/f8754c78-7243-4844-9ab6-eb642d4ab2e7)
+
+
+## 2. Certbot
+
+Instructions:
+https://certbot.eff.org/instructions?ws=nginx&os=ubuntufocal
+
+```sh
+sudo snap install --classic certbot
+```
+
+Output:
+
+```sh
+2025-03-21T11:48:11Z INFO Waiting for automatic snapd restart...
+certbot 3.3.0 from Certbot Project (certbot-eff✓) installed
+```
+
+Link the command:
+
+```sh
+sudo ln -s /snap/bin/certbot /usr/bin/certbot
+```
+
+Basic `certbot` setup for an `nginx` server:
+
+```sh
+sudo certbot --nginx
+```
+
+Output:
+
+```sh
+Requesting a certificate for dwy.is
+
+Successfully received certificate.
+Certificate is saved at: /etc/letsencrypt/live/dwy.is/fullchain.pem
+Key is saved at:         /etc/letsencrypt/live/dwy.is/privkey.pem
+This certificate expires on 2025-06-19.
+These files will be updated when the certificate renews.
+Certbot has set up a scheduled task to automatically renew this certificate in the background.
+
+Deploying certificate
+Successfully deployed certificate for dwy.is to /etc/nginx/sites-enabled/default
+Congratulations! You have successfully enabled HTTPS on https://dwy.is
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+If you like Certbot, please consider supporting our work by:
+ * Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
+ * Donating to EFF:                    https://eff.org/donate-le
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+```
+
+Dry run renewal:
+
+```sh
+sudo certbot renew --dry-run
+```
+
+```sh
+Saving debug log to /var/log/letsencrypt/letsencrypt.log
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Processing /etc/letsencrypt/renewal/dwy.is.conf
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Account registered.
+Simulating renewal of an existing certificate for dwy.is
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Congratulations, all simulated renewals succeeded:
+  /etc/letsencrypt/live/dwy.is/fullchain.pem (success)
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+```
+
+The full config including the TLS is in
+`/etc/nginx/sites-available/default`
+
+Now create a new config file
+_just_ for the subdomain.
+
+## 3. Configure `nginx` Subdomain
+
+```sh
+vi /etc/nginx/sites-enabled/autobase
+```
+
+Paste the contents from this file:
+`nginx/sites-enabled/autobase`
+
+Test `nginx` config:
+
+```sh
+nginx -t
+```
+
+You should see output similar to the following:
+
+```sh
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+```
+
+Test a specific configuration file:
+
+```sh
+nginx -t -c /path/to/conf
+```
+
+In our case:
+
+```sh
+nginx -t -c /etc/nginx/sites-enabled/autobase
+```
+
+If your config fails the test for any reason,
+try checking it online:
+[google.com/search?q=nginx+syntax+check+online](https://www.google.com/search?q=nginx+syntax+check+online)
+e.g:
+[getpagespeed.com/check-nginx-config](https://www.getpagespeed.com/check-nginx-config)
+
+Restart `nginx`:
+
+```sh
+sudo service nginx restart
+```
+
+## 4. Wildcard Certificate
+
+In our case, I actually wanted a wildcard certificate
+so that I can add any subdomain I want later.
+
+Wildcard Certificate instructions:
+https://www.baeldung.com/linux/letsencrypt-certbot-add-subdomains
+
+Sample command:
+
+```sh
+sudo certbot certonly -i nginx -d example.com -d *.example.com
+```
+
+In our case:
+
+```sh
+sudo certbot certonly -i nginx -d dwy.is -d *.dwy.is -v
+```
+
+Output:
+
+```sh
+Saving debug log to /var/log/letsencrypt/letsencrypt.log
+Plugins selected: Authenticator manual, Installer None
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+You have an existing certificate that contains a portion of the domains you
+requested (ref: /etc/letsencrypt/renewal/dwy.is.conf)
+
+It contains these names: dwy.is
+
+You requested these names for the new certificate: dwy.is, *.dwy.is.
+
+Do you want to expand and replace this existing certificate with the new
+certificate?
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+(E)xpand/(C)ancel: E
+Renewing an existing certificate for dwy.is and *.dwy.is
+Performing the following challenges:
+dns-01 challenge for dwy.is
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Please deploy a DNS TXT record under the name:
+
+_acme-challenge.dwy.is.
+
+with the following value:
+
+8GC-85xs1BGQDlU7YKpxA5fyHBV20PqBU8aMA9lAN10
+
+Before continuing, verify the TXT record has been deployed. Depending on the DNS
+provider, this may take some time, from a few seconds to multiple minutes. You can
+check if it has finished deploying with aid of online tools, such as the Google
+Admin Toolbox: https://toolbox.googleapps.com/apps/dig/#TXT/_acme-challenge.dwy.is.
+Look for one or more bolded line(s) below the line ';ANSWER'. It should show the
+value(s) you've just added.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Press Enter to Continue
+```
+
+I created the `TXT` record:
+
+https://ap.www.namecheap.com/domains/domaincontrolpanel/dwy.is/advancedns
+
+![dwyis-txt-record](https://github.com/user-attachments/assets/80ddea19-d06c-4d71-8c8e-f86ee2acd9dc)
+
+But this was incorrect!
+The host needed to be `_acme-challenge`
+***NOT*** `_acme-challenge.dwy.is`
+as was implied by `certbot`.
+i.e. the domain `dwy.is` should not be in the host!
+
+https://toolbox.googleapps.com/apps/dig/#TXT/_acme-challenge.dwy.is
+
+![google-dig-txt](https://github.com/user-attachments/assets/6ccbb156-6c34-4d67-9c13-f69db9b47a76)
+
+I refreshed this like a million times over `48h`
+but it never updated.
+
+```sh
+dig -t txt _acme-challenge.dwy.is
+```
+
+I decided to contact `NameCheap` support via live chat:
+https://www.namecheap.com/help-center/live-chat
+
+They were helpful and together we determined that _I_ had misconfigured the `TXT` record ... 🤦
+
+Updated config:
+
+https://ap.www.namecheap.com/domains/domaincontrolpanel/dwy.is/advancedns
+
+![dwy.is-dns-txt-record](https://github.com/user-attachments/assets/c19e6cae-132c-4f70-ba99-6bd8829f0d13)
+
+Full transcript: [Chat_Transcript_23_Mar_2025.pdf](https://github.com/user-attachments/files/19410954/Chat_Transcript_23_Mar_2025.pdf)
+
+Final output:
+
+```sh
+Renewing an existing certificate for dwy.is and *.dwy.is
+Reloading nginx server after certificate issuance
+
+Successfully received certificate.
+Certificate is saved at: /etc/letsencrypt/live/dwy.is/fullchain.pem
+Key is saved at:         /etc/letsencrypt/live/dwy.is/privkey.pem
+This certificate expires on 2025-06-21.
+These files will be updated when the certificate renews.
+Certbot has set up a scheduled task to automatically renew this certificate in the background.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+If you like Certbot, please consider supporting our work by:
+ * Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
+ * Donating to EFF:                    https://eff.org/donate-le
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+```
+
+Working!
+
+![autobase.dwy.is-with-ssl](https://github.com/user-attachments/assets/15411040-860f-4a56-9c2d-91fc8702c318)
+
+Also used:
+https://dnschecker.org/#TXT/_acme-challenge.dwy.is
