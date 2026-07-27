@@ -12,8 +12,8 @@ sudo apt update -y && sudo apt full-upgrade -y && sudo apt autoremove -y && sudo
 The `alias` for this command on our servers is `upr` ("update and reboot").
 
 > **Note**: We have tons of
-> quick commands in a shared (`private`) **Google Doc**.
-> If you would like to help extending this `public` file, please dive in!
-> Share the server admin commands that you have found useful. 🙏
+> quick commands in a shared (`private`) **Google Doc**.<br />
+> If you would like to help extending this `public` file, please dive in!<br />
+> Share the server admin commands that you have found useful. Thanks! 🙏
 
 [![HitCount](http://hits.dwyl.com/dwyl/learn-devops-cheatsheet.svg)](http://hits.dwyl.com/dwyl/learn-devops)
