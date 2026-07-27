@@ -3,7 +3,6 @@
 This markdown summarises the research done
 on how to deploy a Phoenix application.
 
-
 ## PaaS vs VPS
 
 In the past we have mostly used Platform as a Service (PaaS) providers
@@ -29,7 +28,6 @@ pricing:
 
 The pricing above doesn't include the database which needs to be added to the total cost, see https://elements.heroku.com/addons/heroku-postgresql
 
-
 ### Gigalixir
 
 Similar to Heroku [Gigalixir](https://www.gigalixir.com/) provides
@@ -38,9 +36,9 @@ Having an exclusive focus on deploying Elixir Apps gives Gigalixir several key a
 1. Zero-downtime blue-green continuous deployment.
 see: https://martinfowler.com/bliki/BlueGreenDeployment.html
 2. No limit to concurrent connections.
-3. All clustering handled transparently. 
-(so if you need to scale your app beyond 10k concurrent users, 
-you don't have to pay exponentially more for bigger "dynos" 
+3. All clustering handled transparently.
+(so if you need to scale your app beyond 10k concurrent users,
+you don't have to pay exponentially more for bigger "dynos"
 the way you are forced to scale vertically on Heroku)
 
 Deploying: https://elixircasts.io/deploying-with-gigalixir-%28revised%29
@@ -59,7 +57,6 @@ Like Heroku you need to add the cost for using the database:
 
 see also tiers pricing page: https://gigalixir.readthedocs.io/en/latest/tiers-pricing.html
 
-
 ### Render
 
 [Render](https://render.com/) is another Paas similar to Heroku
@@ -68,14 +65,11 @@ pricing:
 
 ![image](https://user-images.githubusercontent.com/6057298/83645052-e9df4100-a5a9-11ea-8d3e-f1b18bb4cc02.png)
 
-
-
 ## Virtual Private Server
 
 VPS allow us to manage ourself the deployement
 setup. This allow us to customise the server and
 the costs linked to it.
-
 
 ### Linode
 
@@ -84,31 +78,30 @@ the costs linked to it.
 Linode provides and support Ubuntu:
 ![linode-distribution-options-screen](https://user-images.githubusercontent.com/6057298/83647811-3bd59600-a5ad-11ea-893c-b99e3df7f605.png)
 
-
 From there the idea is install Erlang and Elixir on the server
 and then to run the application.
 
 - Install Erlang/Elixir with asdf:
-    - `git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.7.8`
-    - Edit `~/.bashrc file` and add `. $HOME/.asdf/asdf.sh` and run `source ~/.barhrc` to access the `asdf` command
-    - Install required pacakges for Erlang `sudo apt install libssl-dev make automake autoconf libncurses5-dev gcc`
-    - Add erlang plugin to asdf: `asdf plugin-add erlang`
-    - Install Erlang: `asdf install erlang latest`
-    - Install Elixir: `asdf install elixir latest`
-    - Define which Elixir version to use `asdf global elxir <version>`
+  - `git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.7.8`
+  - Edit `~/.bashrc file` and add `. $HOME/.asdf/asdf.sh` and run `source ~/.barhrc` to access the `asdf` command
+  - Install required pacakges for Erlang `sudo apt install libssl-dev make automake autoconf libncurses5-dev gcc`
+  - Add erlang plugin to asdf: `asdf plugin-add erlang`
+  - Install Erlang: `asdf install erlang latest`
+  - Install Elixir: `asdf install elixir latest`
+  - Define which Elixir version to use `asdf global elxir <version>`
 
 - Instsall Nodejs using nvm
-    - `wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash` (from https://github.com/nvm-sh/nvm#installing-and-updating)
-    - run `nvm install node`
+  - `wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash` (from https://github.com/nvm-sh/nvm#installing-and-updating)
+  - run `nvm install node`
 
 - Clone and run the Phoenix application
-    - Clone the application, e.g. `git clone https://github.com/dwyl/hits.git`
-    - Make sure to have all the environemt variables for the application defined
-        - e.g. for the secret key: `mix phx.gen.secret` then `export SECRET_KEY_BASE=<secret>`
-    - Compile assets (see https://hexdocs.pm/phoenix/deployment.html#compiling-your-application-assets) 
-        - `npm run deploy --prefix ./assets`
-        - `mix phx.digest`
-    - Start the server with `Mix`: `MIX_ENV=prod mix phx.server`
+  - Clone the application, e.g. `git clone https://github.com/dwyl/hits.git`
+  - Make sure to have all the environemt variables for the application defined
+    - e.g. for the secret key: `mix phx.gen.secret` then `export SECRET_KEY_BASE=<secret>`
+  - Compile assets (see https://hexdocs.pm/phoenix/deployment.html#compiling-your-application-assets) 
+    - `npm run deploy --prefix ./assets`
+    - `mix phx.digest`
+  - Start the server with `Mix`: `MIX_ENV=prod mix phx.server`
 
 - Another way to run the server is to use `mix release`: https://hexdocs.pm/phoenix/releases.html
 
